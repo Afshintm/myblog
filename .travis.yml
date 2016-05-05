@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+- '4'
+before_script:
+- npm install -g bower grunt-cli
+- bower install
+deploy:
+- provider: s3
+  access_key_id: AKIAJ3VUYZJYNMX6R4LQ
+  secret_access_key: &1
+    secure: im4YFyrJQZd/yXyfTAXWwip8MLI4vGRCKHZ/QsAvb10Zpq022tmhAR/w6hiPRtwbf6QDF5VCvw3rY/60wh+H+kJl5o7jlrg7E1Dixw8JXTZoisOXe+lBmUk8YZLymDTl/LYp9UR8Qw0jhprMITbRhRkggRYECA/Q2WmMlQwSC/P8W3phtLWMvDZazzM/OX47N23Wsrx/XeRcm02ExB8ggcnxI4JgKEwIToZU3464UbTI5IkrCzxI5qJ7rLIDuLZ2kFuxAedSpSqrcF0utuRFVRm96iyj1iCwK4KFKi4mF4B2SgEIV6Mw+skNSCfnrbWZitPqw0WD9GadcegLeNAMeMt99T8R2e2R+M3BZKU8i68NUELrLICkaSIZ4qXSsa5wYWLYZgSYRNwl2aQZSCxKDR2R++fiAyxJwqh98Ue0i8icP39zBnodE53j3KmjFR5oSSWk8OsWRJ8TqNapYpBJaQZBhV8Um+6McsgyDN1dAcMCOnJwjFH7orWQV1asY6Voyww0c/QrQZ7hnBMN7rr7nTLIH9xQ48AMlm6GnC+okTHeTNgQDXYm7Aia+0/Zh+HouIhXn2pPQF7qSeIPys4G0c/hgw7x+t4MYJhcMQnafV4k1LOt8inyVm1p0EAbepSiRvp9gNVwx6udrWGK2MGO6H01ZbAWaFW6cWFd65N9SLw=
+  local_dir: dist
+  skip_cleanup: true
+  on: &2
+    repo: Afshintm/newtodo
+    branch: jomon
+  bucket: afshinteymoori.com
+  region: ap-southeast-2
+  endpoint: afshinteymoori.com.s3-website-ap-southeast-2.amazonaws.com
+  upload-dir: jomon
+before_deploy:
+- grunt autoBuild:prod
+addons:
+  artifacts: true

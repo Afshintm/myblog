@@ -1,0 +1,29 @@
+1- I removed a property from gruntfile wiredep 
+2- I install npm grunt-contrib-xxx something regarding images to workaround the error 
+3- I changed the port to run 
+4- to run the app run 
+grunt serve 
+grunt test for tests 
+
+to install karma dependany for you project if does not not exist install karma like this 
+
+	npm install karma --save-dev
+	npm install karma-jasmine karma-chrome-luncher --save-dev
+
+then your karma and it's dependancies will be installed on node-module folder and you will have to run Karma tests like this 
+
+	node-modules\karma start test\karma.conf.js
+and as it is a pain to type this everytime you are going to run unit tests, you can install Karma comman line interface globally like this 
+	npm install -g karma-cli
+
+
+	got from following article 
+	http://karma-runner.github.io/0.12/intro/installation.html
+
+
+	webSiteHostAddress/index1.html is a sample to show javascript classes in effect it uses scripts\libs\atlib.js 
+
+Travis CI hook 
+
+ <img src="https://travis-ci.org/Afshintm/newtodo.svg?branch=master"></img>
+

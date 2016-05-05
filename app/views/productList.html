@@ -1,0 +1,17 @@
+<div class="row" ng-controler="productCtrl">
+	<div class="col-lg-12">
+		I'm {{data.name}}, have been developing enterprise web applications for a range of industries. You can find some of my personal experience working with different techologies in following articles. Hope that helps :)
+	</div>
+
+	<div class="col-lg-12">
+		<img src="https://travis-ci.org/Afshintm/newtodo.svg?branch=develop"></img>
+	</div>
+	<div class="col-lg-12">
+		<table class="table table-striped" ng-show="model.products">
+			<tr ng-repeat="p in model.products">
+				<td><span>{{p.id}}</span></td>
+				<td><span>{{p.name}}</span></td>
+				<td><span>{{p.category}}</span></td>
+			</tr>
+		</table>
+	</div>

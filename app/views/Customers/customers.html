@@ -1,0 +1,34 @@
+<div class="row" ng-controler="customersCtrl">
+<div class="col-md-9"> 
+ <h3>Customer List</h3>
+</div>
+<div class="col-md-3">
+  <a class="btn btn-primary green" ui-sref=".new">Add new customer</a>
+</div> 
+ <div class="col-md-12">
+    <table class="table table-striped table-bordered table-hover table-condensed dataTable">
+      <thead>
+        <tr role="row">
+          <th role="columnheader">Id</th>
+          <th role="columnheader">Name</th>
+          <th role="columnheader">Address</th>
+          <th role="columnheader">Phone</th>
+          <th role="columnheader">Grade</th>
+          <th role="columnheader"></th>
+        </tr>
+      </thead>
+        <tr ng-repeat="c in model.customers">
+          <td data-title="Id"><span>{{c.id}}</span></td>
+          <td data-title="Name"><span>{{c.name}}</span></td>
+          <td data-title="Address"><span>{{c.address}}</span></td>
+          <td data-title="Phone"><span>{{c.phone}}</span></td>
+          <td data-title="Grade"><span>{{c.grade}}</span></td>
+          <td ><a class="btn btn-primary" ui-sref=".edit({id:c.$id})">Edit</a> <button type="button" ng-click="removeCustomer(c.$id)" class="btn btn-danger">Delete</button>
+          </td>
+        </tr>
+    </table>
+  </div>
+  
+</div>
+<hr/>
+<div ui-view></div>

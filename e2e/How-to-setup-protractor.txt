@@ -1,0 +1,7 @@
+How to setup protractor 
+
+npm install -g protractor
+webdriver-manager update
+webdriver-manager start
+open another commnad window and run app using grunt serve
+open another commnad window and run protractor e2e/conf.js
