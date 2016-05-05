@@ -1,7 +1,7 @@
 'use strict';
 angular.module('myblogApp').
-factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService',
-    function(firebaseRef,fbProductsUrl,$firebaseAuth,UserService){
+factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService','$window',
+    function(firebaseRef,fbProductsUrl,$firebaseAuth,UserService,$window){
     var authentication = 
     {
         login: function(username,password){
@@ -14,6 +14,7 @@ factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService',
               console.log('Logged in as: ', authData.uid);
               UserService.init(username,password,authData);
               console.log(UserService) ;
+              $window.sessionStorage.authenticatedUser = UserService ;
             }).catch(function(error) {
               console.error('Authentication failed: ', error);
             }); 
