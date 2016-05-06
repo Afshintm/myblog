@@ -57,15 +57,22 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 
 
 
-  $provide.factory('myHttpInterceptor',['$q','$window',function myHttpInterceptor($q,$window){
+  $provide.factory('myHttpInterceptor',['$q','$window','$cookieStore',function myHttpInterceptor($q,$window,$cookieStore){
     var requestInterceptor = {
       request: function(config){
 
         config.headers.Authorization = 'Basic YWZzaGluOlBhc3N3b3JkIQ==';
         if ($window.sessionStorage.authenticatedUser)
         {        
-          console.log('this is authenticated User spec :');
+          console.log('this is authenticated User from sessionStorage :');
           console.log($window.sessionStorage.authenticatedUser);
+        }
+
+        var authenticatedUser = $cookieStore.get('authenticatedUser') ;
+        if(authenticatedUser)
+        {
+          console.log('this is authenticated User from cookieStore :');
+          console.log(authenticatedUser) ;
         }
 
         return config || $q.when(config);
