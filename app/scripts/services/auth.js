@@ -19,6 +19,11 @@ factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService','$wi
             }).catch(function(error) {
               console.error('Authentication failed: ', error);
             }); 
+        },
+        getAuthObject : function(){
+            var ref = firebaseRef(fbProductsUrl);
+            var authObject = $firebaseAuth(ref);  
+            return authObject ;
         }
     } ;
     return authentication ;

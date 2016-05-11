@@ -138,7 +138,12 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
     .state('customers', {
       url: '/customers',
       templateUrl: 'views/Customers/customers.html',
-      controller:'customersCtrl'
+      controller:'customersCtrl',
+      resolve: {
+        'currentAuth':['auth',function(auth){
+          return auth.getAuthObject().$requireAuth();
+        }]
+      }
     })
     .state('customers.edit', {
       url: '/:id/edit',

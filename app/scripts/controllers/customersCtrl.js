@@ -1,8 +1,10 @@
 'use strict';
 
-angular.module('myblogApp').controller('customersCtrl',['$scope','Customers',function($scope,Customers){
+angular.module('myblogApp').controller('customersCtrl',['$scope','Customers','currentAuth',function($scope,Customers,currentAuth){
     var model = $scope.model = {} ;
     console.log(Customers) ;
+    console.log('Authentication result:') ;
+    console.log(currentAuth) ;
     
     Customers.getAll().then(function(data){
         model.customers = data ;
