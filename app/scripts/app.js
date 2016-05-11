@@ -180,10 +180,21 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 
 
 }])
-.run(['$firebaseArray','firebaseRef','$cookieStore','$state',
-	function($firebaseArray,firebaseRef,$cookieStore,$state){
+.run(['$firebaseArray','firebaseRef','$cookieStore','$state','$rootScope',
+	function($firebaseArray,firebaseRef,$cookieStore,$state,$rootScope){
 		// console.log('myblogApp run phase is happeing...') ;
 		// console.log(firebaseRef);
+
+    $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
+      // We can catch the error thrown when the $requireAuth promise is rejected
+      // and redirect the user back to the home page
+      if (error === "AUTH_REQUIRED") {
+        $state.go('login');
+      }
+    });
+
+
+
 		if (!$firebaseArray || !firebaseRef){
 			 console.log('test');
 			// console.log(' Some services are not ready') ;
