@@ -7,12 +7,12 @@ angular.module('myblogApp').service('UserService',[function(){
     //As  function passed to service recipie in angularJs is a constructor Function
     // this points to the object instantiated, for which the current constructor is called. 
     // so this has a property called constructor which points to the constructor function which also has a prototype property
-    console.log('this here is an instance object which points to the object instantiated');
-    console.log(this) ;
+    //console.log('this here is an instance object which points to the object instantiated');
+    //console.log(this) ;
 
-    console.log('this, however has a constructor property which points to the current constructor function. ');
+    //console.log('this, however has a constructor property which points to the current constructor function. ');
 
-    console.log(this.constructor);
+    //console.log(this.constructor);
     var proto = this.constructor.prototype;
     
     // we are using method init to give the username and password so that, in another controllers, 

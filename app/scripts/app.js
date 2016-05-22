@@ -64,8 +64,8 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
         config.headers.Authorization = 'Basic YWZzaGluOlBhc3N3b3JkIQ==';
         if ($window.sessionStorage.authenticatedUser)
         {        
-          console.log('this is authenticated User from sessionStorage :');
-          console.log($window.sessionStorage.authenticatedUser);
+          //console.log('this is authenticated User from sessionStorage :');
+          //console.log($window.sessionStorage.authenticatedUser);
         }
 
         var authenticatedUser = $cookieStore.get('authenticatedUser') ;
@@ -140,8 +140,19 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
       templateUrl: 'views/Customers/customers.html',
       controller:'customersCtrl',
       resolve: {
-        'currentAuth':['auth',function(auth){
-          return auth.getAuthObject().$requireAuth();
+        'currentAuth':['auth','$state',function(auth,$state){
+          console.log('current Auth');
+          console.log(auth.authObj) ;
+          var p =  auth.authObj.$requireAuth();
+          p.then(function(data){
+            console.lod(data);
+
+          }).catch(function(error){
+            if (error==='AUTH_REQUIRED')
+              console.log(error);
+            $state.go('login');
+
+          });
         }]
       }
     })
@@ -186,15 +197,13 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 		// console.log(firebaseRef);
 
     $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
+      console.log('route Changed Error.')
       // We can catch the error thrown when the $requireAuth promise is rejected
       // and redirect the user back to the home page
       if (error === "AUTH_REQUIRED") {
         $state.go('login');
       }
     });
-
-
-
 		if (!$firebaseArray || !firebaseRef){
 			 console.log('test');
 			// console.log(' Some services are not ready') ;
