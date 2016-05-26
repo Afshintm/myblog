@@ -5,7 +5,7 @@ angular.module('myblogApp').controller('customersCtrl',['$scope','Customers','cu
     console.log(Customers) ;
     console.log('Authentication result:') ;
     console.log(currentAuth) ;
-    
+
     Customers.getAll().then(function(data){
         model.customers = data ;
     }).catch(function(error){

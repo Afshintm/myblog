@@ -71,8 +71,10 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
         var authenticatedUser = $cookieStore.get('authenticatedUser') ;
         if(authenticatedUser)
         {
-          console.log('this is authenticated User from cookieStore :');
-          console.log(authenticatedUser) ;
+          //console.log('this is authenticated User from cookieStore :');
+          //console.log(authenticatedUser) ;
+          $cookieStore.remove('authenticatedUser');
+
         }
 
         return config || $q.when(config);
@@ -88,6 +90,25 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
   // For any unmatched url, redirect to /state1
   $urlRouterProvider.otherwise('/');
   //
+
+
+
+
+     // $stateProvider.whenAuthenticated = function (path, state) {
+
+     //    securedRoutes.push(path); // store all secured routes for use with authRequired() below
+     //    state.resolve = state.resolve || {};
+
+     //    state.resolve.user = ['auth', function (auth) {
+     //      return auth.authObj.$requireAuth(); //fetch auth info
+     //    }];
+
+     //    $routeProvider.when(path, route);
+     //    return this;
+     //  };
+
+     // console.log($stateProvider) ;
+
   // Now set up the states
   $stateProvider
     .state('main',{
@@ -137,22 +158,24 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
     })
     .state('customers', {
       url: '/customers',
+      authRequired: true,
       templateUrl: 'views/Customers/customers.html',
       controller:'customersCtrl',
       resolve: {
-        'currentAuth':['auth','$state',function(auth,$state){
-          console.log('current Auth');
-          console.log(auth.authObj) ;
-          var p =  auth.authObj.$requireAuth();
-          p.then(function(data){
-            console.lod(data);
+        'currentAuth':['auth','$q',function(auth,$q){
+          
+          
+          var p = auth.authObj.$requireAuth();
+          return p ;
 
-          }).catch(function(error){
-            if (error==='AUTH_REQUIRED')
-              console.log(error);
-            $state.go('login');
 
-          });
+          // p.then(function(data){
+          //   console.log('current Auth success');
+          //   return $q.when(auth.authObj);
+          // }).catch(function(error){
+          //   console.log('currentAuth failure') ;
+          //   return $q.reject(error);
+          // });
         }]
       }
     })
@@ -191,19 +214,62 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 
 
 }])
-.run(['$firebaseArray','firebaseRef','$cookieStore','$state','$rootScope',
-	function($firebaseArray,firebaseRef,$cookieStore,$state,$rootScope){
-		// console.log('myblogApp run phase is happeing...') ;
-		// console.log(firebaseRef);
 
-    $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
-      console.log('route Changed Error.')
+/**
+   * Apply some route security. Any route's resolve method can reject the promise with
+   * { authRequired: true } to force a redirect. This method enforces that and also watches
+   * for changes in auth status which might require us to navigate away from a path
+   * that we can no longer view.
+   */
+    // .run(['$rootScope', '$location', 'auth', 
+
+    //   function ($rootScope, $location, auth) {
+    //     // watch for login status changes and redirect if appropriate
+    //     auth.authObj.$onAuth(check);
+
+    //     // some of our routes may reject resolve promises with the special {authRequired: true} error
+    //     // this redirects to the login page whenever that is encountered
+    //     $rootScope.$on("$stateChangeError", function (e, next, prev, err) {
+    //       if (err === "AUTH_REQUIRED") {
+    //         $state.go('login');
+    //       }
+    //     });
+
+    //     function check(user) {
+    //       if (!user && authRequired($location.path())) {
+    //         //console.log('check failed', user, $location.path()); //debug
+    //         $location.path(loginRedirectPath);
+    //       } 
+    //     }
+
+    //     function authRequired(path) {
+    //       return securedRoutes.indexOf(path) !== -1;
+    //     }
+    //   }
+    // ]);
+
+
+.run(['$firebaseArray','firebaseRef','$cookieStore','$state','$rootScope','auth',
+	function($firebaseArray,firebaseRef,$cookieStore,$state,$rootScope,auth){
+
+    //auth.authObj.$onAuth(check);
+
+    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {       
+      console.log('state Changed Error.')
       // We can catch the error thrown when the $requireAuth promise is rejected
-      // and redirect the user back to the home page
-      if (error === "AUTH_REQUIRED") {
+      // and redirect the user back to the login page
+      if (error === 'AUTH_REQUIRED') {
+        console.log('Redirectibg to login');
         $state.go('login');
       }
     });
+
+    // function check(user){
+    //   if(!user)
+    //     console.log('There is no authenticated User');
+    // } 
+
+
 		if (!$firebaseArray || !firebaseRef){
 			 console.log('test');
 			// console.log(' Some services are not ready') ;
