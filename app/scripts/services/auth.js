@@ -8,14 +8,13 @@ factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService','$wi
     var authentication = 
     {
         login: function(username,password){
-            authObject.$authWithPassword({
+           return authObject.$authWithPassword({
               email: username,
               password: password
             }).then(function(authData) {
-              //console.log('authData is : ');
-              //console.log( authData);
+              
               UserService.init(username,password,authData);
-              //console.log(UserService);
+              
               $cookieStore.put('authenticatedUser',UserService);
               $cookieStore.put('authData',authData);
               $window.sessionStorage.authenticatedUser = UserService ;

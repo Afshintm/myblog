@@ -211,8 +211,6 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
           $scope.things = ['A', 'Set', 'Of', 'Things'];
         }
       });
-
-
 }])
 
 /**
@@ -249,18 +247,22 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
     // ]);
 
 
-.run(['$firebaseArray','firebaseRef','$cookieStore','$state','$rootScope','auth',
-	function($firebaseArray,firebaseRef,$cookieStore,$state,$rootScope,auth){
+.run(['$firebaseArray','firebaseRef','$cookieStore','$state','$rootScope','auth','authorization',
+	function($firebaseArray,firebaseRef,$cookieStore,$state,$rootScope,auth,authorization){
 
     //auth.authObj.$onAuth(check);
 
      $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+      console.log('$stateChangeStart is happening') ;
         // track the state the user wants to go to; authorization service needs this
         $rootScope.toState = toState;
         $rootScope.toStateParams = toStateParams;
         // if the principal is resolved, do an authorization check immediately. otherwise,
         // it'll be done when the state it resolved.
-        //if (principal.isIdentityResolved()) authorization.authorize();
+        //console.log($rootScope.toState);
+        // var authData = auth.authObj.$getAuth();
+        if(toState.authRequired)
+          authorization.authorize();
       });    
 
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {       
