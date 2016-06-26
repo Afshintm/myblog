@@ -1,7 +1,7 @@
 'use strict';
 angular.module('myblogApp').
-factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService','$window','$cookieStore',
-    function(firebaseRef,fbProductsUrl,$firebaseAuth,UserService,$window,$cookieStore){
+factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService','$window','$cookies',
+    function(firebaseRef,fbProductsUrl,$firebaseAuth,UserService,$window,$cookies){
     var ref = firebaseRef(fbProductsUrl);
     var authObject = $firebaseAuth(ref);  
 
@@ -12,11 +12,13 @@ factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService','$wi
               email: username,
               password: password
             }).then(function(authData) {
-              
+              console.log('authData after login:');
+              console.log(authData);
               UserService.init(username,password,authData);
               
-              $cookieStore.put('authenticatedUser',UserService);
-              $cookieStore.put('authData',authData);
+              $cookies.put('authenticatedUser',UserService);
+              $cookies.put('test1','test1Value');
+              $cookies.put('authData',JSON.stringify(authData));
               $window.sessionStorage.authenticatedUser = UserService ;
             }).catch(function(error) {
               console.error('Authentication failed: ', error);
@@ -30,8 +32,8 @@ factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService','$wi
           if (currentAuth!==null){
             console.log('We are logging out');
             authObject.$unauth();
-            $cookieStore.remove('authenticatedUser');
-            $cookieStore.remove('authData');
+            $cookies.remove('authenticatedUser');
+            $cookies.remove('authData');
           }
         }
         //  function(){

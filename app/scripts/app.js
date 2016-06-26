@@ -57,7 +57,7 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 
 
 
-  $provide.factory('myHttpInterceptor',['$q','$window','$cookieStore',function myHttpInterceptor($q,$window,$cookieStore){
+  $provide.factory('myHttpInterceptor',['$q','$window','$cookies',function myHttpInterceptor($q,$window,$cookies){
     var requestInterceptor = {
       request: function(config){
 
@@ -68,12 +68,12 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
           //console.log($window.sessionStorage.authenticatedUser);
         }
 
-        var authenticatedUser = $cookieStore.get('authenticatedUser') ;
+        var authenticatedUser = $cookies.get('authenticatedUser') ;
         if(authenticatedUser)
         {
           //console.log('this is authenticated User from cookieStore :');
           //console.log(authenticatedUser) ;
-          $cookieStore.remove('authenticatedUser');
+          $cookies.remove('authenticatedUser');
 
         }
 
@@ -247,8 +247,8 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
     // ]);
 
 
-.run(['$firebaseArray','firebaseRef','$cookieStore','$state','$rootScope','auth','authorization',
-	function($firebaseArray,firebaseRef,$cookieStore,$state,$rootScope,auth,authorization){
+.run(['$firebaseArray','firebaseRef','$cookies','$state','$rootScope','auth','authorization',
+	function($firebaseArray,firebaseRef,$cookies,$state,$rootScope,auth,authorization){
 
     //auth.authObj.$onAuth(check);
 

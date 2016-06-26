@@ -9,7 +9,8 @@
   </ul>
 </div>
 <div>
-<span ng-show="authenticatedUserEmail">
-  <a href="#" ng-click="logout()">Logout</a> {{authenticatedUserEmail}}
+	<button type="button" class="btn btn-lg btn-primary" ngClick="login" ng-show="authData===null">login</button>
+<span ng-show="authData">
+  <a href="#" ng-click="logout()" ng-show="authData">Logout</a> {{authenticatedUserEmail}}
 </span>
 </div>

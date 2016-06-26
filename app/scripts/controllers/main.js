@@ -8,23 +8,50 @@
  * Controller of the myblogApp
  */
 angular.module('myblogApp')
-  .controller('MainCtrl', ['$scope','$cookieStore','auth',function ($scope,$cookieStore,auth) {
-  	$scope.authData = $cookieStore.get('authData');
-    //console.log($scope.authData);
-  	//$scope.authObj = auth.authObj;
+  .controller('MainCtrl', ['$scope','$cookies','auth','$state',function ($scope,$cookies,auth,$state) {
+
+    $scope.logout = function(){
+      auth.logout() ;
+    }
+    $scope.login = function(){
+      console.log('go to login');
+      $state.go('login');
+    }
+
+    // var rawAuthData = $cookies.get('authData');
+    // // console.log(rawAuthData);
+    //
+    // var d = JSON.parse(rawAuthData);
+
+    // $scope.authData = d ;
+    // // console.log($cookies.get('test1'));
+    // console.log(auth.authObj.$getAuth());
+
+    // if ($scope.authData){
+    //   $scope.authenticatedUserEmail = $scope.authData.password.email ;
+    // }else
+    // {
+    //   $scope.authenticatedUserEmail = '' ;
+    // }
+
+
+    var cookiesData= {} ;
+    var rawAuthData = $cookies.get('authData');
+    if (rawAuthData)
+      cookiesData = JSON.parse(rawAuthData);
+
+    $scope.authData = auth.authObj.$getAuth();
+    // console.log($cookies.get('test1'));
+    //console.log();
+
     if ($scope.authData){
       $scope.authenticatedUserEmail = $scope.authData.auth.token.email ;
     }else
     {
       $scope.authenticatedUserEmail = '' ;
     }
-    
 
-    $scope.logout = function(){
-      auth.logout() ;
-}
 
-  	//console.log($scope.authData);
     $scope.awesomeThings = [
       'Fully responsive pages working with all desktop, tablet and mobile devices',
       'Bootstrap 3 UI enabled',

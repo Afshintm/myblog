@@ -5,7 +5,7 @@
   "repository": "git@github.com:Afshintm/myblogApp.git",
   "dependencies": {
     "socket.io": "*"
-    },
+  },
   "devDependencies": {
     "chalk": "^1.1.3",
     "convert-source-map": "^1.2.0",
