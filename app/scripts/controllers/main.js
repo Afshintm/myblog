@@ -11,12 +11,16 @@ angular.module('myblogApp')
   .controller('MainCtrl', ['$scope','$cookies','auth','$state',function ($scope,$cookies,auth,$state) {
 
     $scope.logout = function(){
-      auth.logout() ;
+      auth.logout();
+      $scope.isAuthenticated = false ;
     }
     $scope.login = function(){
       console.log('go to login');
+      $scope.isAuthenticated = true ;
       $state.go('login');
+
     }
+    $scope.isAuthenticated = false ;
 
     // var rawAuthData = $cookies.get('authData');
     // // console.log(rawAuthData);
@@ -41,6 +45,11 @@ angular.module('myblogApp')
       cookiesData = JSON.parse(rawAuthData);
 
     $scope.authData = auth.authObj.$getAuth();
+    if ($scope.authData){
+      $scope.isAuthenticated = true ;
+    }else
+      $scope.isAuthenticated = false;
+
     // console.log($cookies.get('test1'));
     //console.log();
 
