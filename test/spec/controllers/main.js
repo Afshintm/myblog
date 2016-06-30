@@ -6,48 +6,74 @@ describe('Controller: MainCtrl', function () {
   scope,
   configProviderObj,
   $cookies,
-  authMock;
+  authMock, $window,
+   $state,userMock;
+
+  //var stateSpy;
+
+// within the beforeEach
+
 
   // Create a "spy object" for our auth service.
   // This will isolate the controller we're testing from
   // any other code.
   // we'll set up the returns for this later 
-  authMock = jasmine.createSpyObj('auth', ['login','authObj','logout']);
+  authMock = jasmine.createSpyObj('auth', ['login','logout']);
+  authMock.authObj = {
+    $getAuth : function(){
+      return {
+        auth:{
+          token:{
+            email:'email@address.com'
+          }
+        }
+      };
+    }
+  };
+  //stateSpy = sinon.stub($state, 'go');
 
   beforeEach(module('myblogApp'));
- 
-  // // load the controller's module
 
-  // module(function ($provide) {
-  //   $provide.provider('config', function(){
-  //     this.env = jasmine.createSpy('env') ;
-  //     // {
-  //     //    'name': 'development',
-  //     //   'apiEndpoint': 'http://localhost/BackendServices'
-  //     // };
-  //     this.$get = function(){
-  //       //var getENV = jasmine.createSpy('getENV');
-  //       return;
-  //       //return env ;
-  //     };
+
+  //beforeEach(module(function ($stateProvider) { $stateProvider.state('login', { url: '/' }); }));
+
+  // beforeEach(function(){
+  //   module(function($provide){
+  //     $provide.service('$window', function(){
+  //       this.alert= jasmine.createSpy('alert');
+  //     });
+  //     $provide.service('UserService', function(){
+  //       this.init = jasmine.createSpy('init');
+  //       this.toString = jasmine.createSpy('toString');
+
+  //     });
   //   });
+  //   module('services');
   // });
 
-  // module(function(configProvider){
-  //   configProviderObj = configProvider ;
-  // });
 
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope,_$cookies_) {
+  beforeEach(inject(function ($controller, $rootScope,_$cookies_,_$state_,_$window_) {
+    //stateSpy = sinon.stub($state, 'go');
+    $window = _$window_;
+    $window.sessionStorage = { // mocking sessionStorage
+            getItem: function(key) {
+                return this[key];
+            }
+        };
+
     scope = $rootScope.$new();
     $cookies = _$cookies_;
-    //console.log('scope is : ');
-    //console.log(scope);
+    $state = _$state_ ;
+
+    console.log('scope is : ');
+    console.log(scope);
     MainCtrl = $controller('MainCtrl', {
       $scope: scope,
       $cookies: $cookies,
-
+      auth:authMock,
+      $state:$state
     });
   }));
 
@@ -61,3 +87,83 @@ describe('Controller: MainCtrl', function () {
 });
 
 
+
+// 'use strict';
+
+// describe('Controller: MainCtrl', function () {
+//
+//   var MainCtrl,
+//     scope,
+//     configProviderObj,
+//     $cookies,
+//     authMock;
+//
+//   // Create a "spy object" for our auth service.
+//   // This will isolate the controller we're testing from
+//   // any other code.
+//   // we'll set up the returns for this later
+//   authMock = jasmine.createSpyObj('auth', ['login','authObj','logout']);
+//
+//   beforeEach(module('myblogApp'));
+//
+//   // // load the controller's module
+//
+//   // module(function ($provide) {
+//   //   $provide.provider('config', function(){
+//   //     this.env = jasmine.createSpy('env') ;
+//   //     // {
+//   //     //    'name': 'development',
+//   //     //   'apiEndpoint': 'http://localhost/BackendServices'
+//   //     // };
+//   //     this.$get = function(){
+//   //       //var getENV = jasmine.createSpy('getENV');
+//   //       return;
+//   //       //return env ;
+//   //     };
+//   //   });
+//   // });
+//
+//   // module(function(configProvider){
+//   //   configProviderObj = configProvider ;
+//   // });
+//
+//
+//   beforeEach(
+//     function(){
+//
+//       module(function($provide){
+//         $provide.service('$window', function(){
+//           this.alert= jasmine.createSpy('alert');
+//         });
+//         $provide.service('modalSvc', function(){
+//           this.showModalDialog = jasmine.createSpy('showModalDialog');
+//         });
+//       });
+//
+//       module('services');
+//     });
+//
+//
+//   // Initialize the controller and a mock scope
+//   beforeEach(inject(function ($controller, $rootScope,_$cookies_) {
+//     scope = $rootScope.$new();
+//     $cookies = _$cookies_;
+//     //console.log('scope is : ');
+//     //console.log(scope);
+//     MainCtrl = $controller('MainCtrl', {
+//       $scope: scope,
+//       $cookies: $cookies,
+//
+//     });
+//   }));
+//
+//   it('should attach a list of awesomeThings to the scope', function () {
+//     expect(true).toBe(true);
+//     scope = true;
+//     expect(scope).not.toBe(false);
+//     //console.log(scope.awesomeThings.length);
+//     //expect(scope.awesomeThings.length).toBe(4);
+//   });
+// });
+//
+//
