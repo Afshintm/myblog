@@ -75,6 +75,7 @@ describe('Controller: MainCtrl', function () {
       auth:authMock,
       $state:$state
     });
+    console.log('instantiated the controller') ;
   }));
 
   it('should attach a list of awesomeThings to the scope', function () {
@@ -86,7 +87,7 @@ describe('Controller: MainCtrl', function () {
   });
 });
 
-
+//===================
 
 // 'use strict';
 
