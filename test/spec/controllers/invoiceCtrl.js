@@ -8,21 +8,6 @@ describe('Controller: invoiceCtrl', function () {
   beforeEach(module('myblogApp'));
 
 
-// 	var mockEmployee ;
-// module(function($provide) {
-// 	$provide.provider('mockEmployee',
-// 		function(){
-// 			function Employee(name,age){
-// 			this.name = name;
-// 			this.age = age;
-// 			this.isEnabled = true;
-// 			}
-// 			this.$get = function () {
-//                 return Employee;
-//                 };
-//             });
-// 	});
-
 
   beforeEach(inject(function ($controller, $rootScope) {
  
