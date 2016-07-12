@@ -1,91 +1,62 @@
-// 'use strict';
+'use strict';
 
-// describe('Controller: MainCtrl', function () {
+describe('Controller: MainCtrl', function () {
 
-//  var MainCtrl,
-//   scope,
-//   configProviderObj,
-//   $cookies,
-//   authMock, $window,
-//    $state,userMock;
-
-//   //var stateSpy;
-
-// // within the beforeEach
+ var MainCtrl,
+  scope,
+  $cookies,
+  authMock, $window,
+     $state;
 
 
-//   // Create a "spy object" for our auth service.
-//   // This will isolate the controller we're testing from
-//   // any other code.
-//   // we'll set up the returns for this later 
-//   authMock = jasmine.createSpyObj('auth', ['login','logout']);
-//   authMock.authObj = {
-//     $getAuth : function(){
-//       return {
-//         auth:{
-//           token:{
-//             email:'email@address.com'
-//           }
-//         }
-//       };
-//     }
-//   };
-//   //stateSpy = sinon.stub($state, 'go');
+  // Create a "spy object" for our auth service.
+  // This will isolate the controller we're testing from
+  // any other code.
+  // we'll set up the returns for this later
+  authMock = jasmine.createSpyObj('auth', ['login','logout']);
+  authMock.authObj = {
+    $getAuth : function(){
+      return {
+        auth:{
+          token:{
+            email:'email@address.com'
+          }
+        }
+      };
+    }
+  };
 
-//   beforeEach(module('myblogApp'));
+  beforeEach(module('myblogApp'));
 
+  // Initialize the controller and a mock scope
+  beforeEach(inject(function ($controller, $rootScope,_$cookies_,_$state_,_$window_) {
+    $window = _$window_;
+    $window.sessionStorage = { // mocking sessionStorage
+            getItem: function(key) {
+                return this[key];
+            }
+        };
 
-//   //beforeEach(module(function ($stateProvider) { $stateProvider.state('login', { url: '/' }); }));
+    scope = $rootScope.$new();
+    $cookies = _$cookies_;
+    $state = _$state_ ;
 
-//   // beforeEach(function(){
-//   //   module(function($provide){
-//   //     $provide.service('$window', function(){
-//   //       this.alert= jasmine.createSpy('alert');
-//   //     });
-//   //     $provide.service('UserService', function(){
-//   //       this.init = jasmine.createSpy('init');
-//   //       this.toString = jasmine.createSpy('toString');
+    MainCtrl = $controller('MainCtrl', {
+      $scope: scope,
+      $cookies: $cookies,
+      auth:authMock,
+      $state:$state
+    });
+    console.log('instantiated the controller') ;
+  }));
 
-//   //     });
-//   //   });
-//   //   module('services');
-//   // });
+  it('should attach a list of awesomeThings to the scope', function () {
 
-
-
-//   // Initialize the controller and a mock scope
-//   beforeEach(inject(function ($controller, $rootScope,_$cookies_,_$state_,_$window_) {
-//     //stateSpy = sinon.stub($state, 'go');
-//     $window = _$window_;
-//     $window.sessionStorage = { // mocking sessionStorage
-//             getItem: function(key) {
-//                 return this[key];
-//             }
-//         };
-
-//     scope = $rootScope.$new();
-//     $cookies = _$cookies_;
-//     $state = _$state_ ;
-
-//     console.log('scope is : ');
-//     console.log(scope);
-//     MainCtrl = $controller('MainCtrl', {
-//       $scope: scope,
-//       $cookies: $cookies,
-//       auth:authMock,
-//       $state:$state
-//     });
-//     console.log('instantiated the controller') ;
-//   }));
-
-//   it('should attach a list of awesomeThings to the scope', function () {
-//     expect(true).toBe(true);
-//     scope = true;
-//     expect(scope).not.toBe(false);
-//     //console.log(scope.awesomeThings.length);
-//     //expect(scope.awesomeThings.length).toBe(4);
-//   });
-// });
+    expect(scope).not.toBe(null);
+    //console.log(scope);
+    expect(scope.awesomeThings.length).toBe(4);
+  });
+});
 
 //===================
 
