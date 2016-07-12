@@ -162,20 +162,12 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
       templateUrl: 'views/Customers/customers.html',
       controller:'customersCtrl',
       resolve: {
-        'currentAuth':['auth','$q',function(auth,$q){
+        'currentAuth':['auth',function(auth){
           
           
           var p = auth.authObj.$requireAuth();
           return p ;
 
-
-          // p.then(function(data){
-          //   console.log('current Auth success');
-          //   return $q.when(auth.authObj);
-          // }).catch(function(error){
-          //   console.log('currentAuth failure') ;
-          //   return $q.reject(error);
-          // });
         }]
       }
     })
@@ -261,12 +253,13 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
         // it'll be done when the state it resolved.
         //console.log($rootScope.toState);
         // var authData = auth.authObj.$getAuth();
-        if(toState.authRequired)
+        if(toState.authRequired){
           authorization.authorize();
+        }
       });    
 
-    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {       
-      console.log('state Changed Error.')
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      console.log('state Changed Error.');
       // We can catch the error thrown when the $requireAuth promise is rejected
       // and redirect the user back to the login page
       if (error === 'AUTH_REQUIRED') {

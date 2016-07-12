@@ -10,5 +10,4 @@
 
 .constant('fbjomonCustomersUrl', 'https://jomoncustomers.firebaseio.com/')
 
-
 ;

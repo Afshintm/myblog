@@ -15,5 +15,5 @@ angular.module('myblogApp').controller('invoiceCtrl',['$scope',function($scope){
 	};
 	//model.employee = new Employee('afshin', 42);
 	
-	// console.log(model.viewTitle);
+	console.log(model.viewTitle);
 }]);

@@ -13,13 +13,13 @@ angular.module('myblogApp')
     $scope.logout = function(){
       auth.logout();
       $scope.isAuthenticated = false ;
-    }
+    };
     $scope.login = function(){
       console.log('go to login');
       $scope.isAuthenticated = true ;
       $state.go('login');
 
-    }
+    };
     $scope.isAuthenticated = false ;
 
     // var rawAuthData = $cookies.get('authData');
@@ -41,18 +41,19 @@ angular.module('myblogApp')
 
     var cookiesData= {} ;
     var rawAuthData = $cookies.get('authData');
-    if (rawAuthData)
-      cookiesData = JSON.parse(rawAuthData);
+    if (rawAuthData){
+        cookiesData = JSON.parse(rawAuthData);
+    }
+
 
     $scope.authData = auth.authObj.$getAuth();
     if ($scope.authData){
       $scope.isAuthenticated = true ;
     }else
-      $scope.isAuthenticated = false;
-
-    // console.log($cookies.get('test1'));
-    //console.log();
-
+    {
+        $scope.isAuthenticated = false;
+    }
+      
     if ($scope.authData){
       $scope.authenticatedUserEmail = $scope.authData.auth.token.email ;
     }else

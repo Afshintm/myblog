@@ -7,7 +7,7 @@ angular.module('myblogApp').controller('loginCtrl',['$scope','utils','ENV','User
     };
     $scope.login = function(){
         console.log('login is happening');
-        auth.login(model.username,model.password).then(function(data){
+        auth.login(model.username,model.password).then(function(){
         	console.log('logged in successfully.');
         	console.log($rootScope.returnToState) ;
         	if($rootScope.returnToState){
@@ -16,6 +16,7 @@ angular.module('myblogApp').controller('loginCtrl',['$scope','utils','ENV','User
         	}
         }).catch(function(error){
         	console.log('You are not authenticated.');
+            console.log('authentication Error is :'+error) ;
         });
     };
 }]);
