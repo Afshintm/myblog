@@ -12,12 +12,12 @@ deploy:
   local_dir: dist
   skip_cleanup: true
   on: &2
-    repo: Afshintm/newtodo
-    branch: jomon
+    repo: Afshintm/myblog
+    branch: feature/simplifyBuild
   bucket: afshinteymoori.com
   region: ap-southeast-2
   endpoint: afshinteymoori.com.s3-website-ap-southeast-2.amazonaws.com
-  upload-dir: jomon
+  upload-dir: myblog
 before_deploy:
 - grunt autoBuild:prod
 addons:
