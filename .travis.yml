@@ -34,4 +34,5 @@ before_deploy:
 - rvm 1.9.3 do gem install mime-types -v 2.6.2
 addons:
   artifacts: true
+
   
