@@ -20,6 +20,9 @@ another addition to old travis.yml file was as follow which i added in before_de
 as I was getting mimetype error with ruby 1.9.3
 
 
+Another thing worth mentioning is that I also commented out grunt:test as angular-mock was getting undefined issue and
+I had no choice but to do that
+
 
 first I got access_key and secret_access_key from AWS
 then I run following command in the main folder of the project giving both access_key and secret_access_key
