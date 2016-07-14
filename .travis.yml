@@ -30,9 +30,8 @@ deploy:
   endpoint: afshinteymoori.com.s3-website-ap-southeast-2.amazonaws.com
   upload-dir: myblog
 before_deploy:
-- grunt autoBuild:prod
 - rvm 1.9.3 do gem install mime-types -v 2.6.2
+- grunt autoBuild:prod
 addons:
   artifacts: true
 
-  
