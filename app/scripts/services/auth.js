@@ -1,9 +1,11 @@
 'use strict';
 angular.module('myblogApp').
-factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService','$window','$cookies',
-    function(firebaseRef,fbProductsUrl,$firebaseAuth,UserService,$window,$cookies){
-    var ref = firebaseRef(fbProductsUrl);
-    var authObject = $firebaseAuth(ref);  
+factory('auth',['firebaseRef','fbProductsUrl','UserService','$window','$cookies','firebaseProductsDb',
+    function(firebaseRef,fbProductsUrl,$firebaseAuth,UserService,$window,$cookies,firebaseProductsDb){
+      console.log(firebaseProductsDb);
+    //var ref = firebaseRef(fbProductsUrl);
+    //console.log(ref);
+    //var authObject = $firebaseAuth(ref);  
 
     var authentication = 
     {

@@ -9,16 +9,25 @@
  * Main module of the application.
  */
  
-//angular.module('myblogApp', ['ngRoute','ngAnimate','ngCookies','config','firebase','person'])
-angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','firebase','person'])
-// .constant('fbProductsUrl','https://afshinproduct.firebaseio.com')
-// .constant('fbArticlesUrl','https://afshinblog.firebaseio.com')
-.factory('firebaseRef',['$window',function($window){
+
+angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','person'])
+ .factory('firebaseRef',['$window',function($window){
+  //var t = new Firebase('https://afshinproduct.firebaseio.com');
+  //console.log(t);
+  //console.log('We inject angularFire');
+  console.log('inside firebaseRef');
 	return function(url){
-		var fireRef = new $window.Firebase(url);
+    
+		var fireRef = url;
 		return fireRef;
+
 	};
 }])
+ .provider('config',function(){
+    this.$get = function(){
+      return angular.module('config');
+    };
+  })
 
 // using provider helper before config to define a provider 
 // person provider simply return an instance of Person constructor function which in turn has to ahve a $get property or method 
@@ -28,9 +37,8 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 // 	return new Person();
 // })
 // we inject the defined provider using the provider name + 'Provider' suffix to our module config phase 
-.config(['ENV','$provide', '$stateProvider', '$urlRouterProvider', 'personProvider','$httpProvider', function(ENV, $provide, $stateProvider, $urlRouterProvider ,personProvider,$httpProvider){
-
-
+.config(['ENV','$provide', '$stateProvider', '$urlRouterProvider', 'personProvider','$httpProvider', 'configProvider',function(ENV, $provide, $stateProvider, $urlRouterProvider ,personProvider,$httpProvider, configProvider){
+console.log('config is happening') ;
   //In configuration phase we get other dependecies using their providers
   //at this stage services, factories and controllers have not been instantiated yet
   //console.log('myblogApp configuration phase is happening...') ;
@@ -42,11 +50,14 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 	personProvider.setFirstName('afshin');
 	personProvider.setLastName('Teymoori');
 
-	$provide.provider('appConfig',function(){
-		this.$get = function(){
-			return angular.module('config');
-		};
-	});
+// 	var t = $provide.provider('appConfig',function(){
+// 		this.$get = function(){
+// 			return angular.module('config');
+// 		};
+// 	});
+
+// console.log(t);
+
 
 	$provide.provider('myService',function myServiceProvider(){
 		this.$get = function(){
@@ -239,11 +250,11 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
     // ]);
 
 
-.run(['$firebaseArray','firebaseRef','$cookies','$state','$rootScope','auth','authorization',
-	function($firebaseArray,firebaseRef,$cookies,$state,$rootScope,auth,authorization){
-
+.run(['firebaseRef','$cookies','$state','$rootScope','auth','authorization','config',
+	function(firebaseRef,$cookies,$state,$rootScope,auth,authorization,config){
+    console.log('run phase is running');
     //auth.authObj.$onAuth(check);
-
+     console.log(config);
      $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
       console.log('$stateChangeStart is happening') ;
         // track the state the user wants to go to; authorization service needs this
@@ -274,11 +285,11 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
     // } 
 
 
-		if (!$firebaseArray || !firebaseRef){
-			 console.log('test');
-			// console.log(' Some services are not ready') ;
+		// if (!$firebaseArray || !firebaseRef){
+		// 	 console.log('test');
+		// 	// console.log(' Some services are not ready') ;
 
-		}
+		// }
 		$state.go('main');
 	}]);
 
