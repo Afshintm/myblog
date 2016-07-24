@@ -7,27 +7,23 @@
  * # myblogApp
  *
  * Main module of the application.
- */
- 
+ */ 
 
 angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','person'])
- .factory('firebaseRef',['$window',function($window){
-  //var t = new Firebase('https://afshinproduct.firebaseio.com');
-  //console.log(t);
-  //console.log('We inject angularFire');
-  console.log('inside firebaseRef');
-	return function(url){
-    
-		var fireRef = url;
-		return fireRef;
+  .factory('firebaseRef',['$window',function($window){
 
-	};
-}])
- .provider('config',function(){
-    this.$get = function(){
-      return angular.module('config');
-    };
-  })
+ 	return function(url){
+    
+ 		var fireRef = url;
+ 		return fireRef;
+
+ 	};
+ }])
+.provider('config',function(){
+   this.$get = function(){
+     return angular.module('config');
+   };
+ })
 
 // using provider helper before config to define a provider 
 // person provider simply return an instance of Person constructor function which in turn has to ahve a $get property or method 
@@ -37,12 +33,17 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
 // 	return new Person();
 // })
 // we inject the defined provider using the provider name + 'Provider' suffix to our module config phase 
-.config(['ENV','$provide', '$stateProvider', '$urlRouterProvider', 'personProvider','$httpProvider', 'configProvider',function(ENV, $provide, $stateProvider, $urlRouterProvider ,personProvider,$httpProvider, configProvider){
-console.log('config is happening') ;
+.config(['ENV','$provide', '$stateProvider', '$urlRouterProvider', 'personProvider','$httpProvider', 'configProvider',
+  function(ENV, $provide, $stateProvider, $urlRouterProvider ,personProvider,$httpProvider, configProvider){
+
   //In configuration phase we get other dependecies using their providers
   //at this stage services, factories and controllers have not been instantiated yet
-  //console.log('myblogApp configuration phase is happening...') ;
+  console.log('myblogApp configuration phase is happening...') ;
   
+  console.log(configProvider);
+  //console.log(configProvider);
+  console.log('are two providers') ;
+
   //$httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
@@ -65,8 +66,6 @@ console.log('config is happening') ;
 			return fireRef;	
 		};
 	});
-
-
 
   $provide.factory('myHttpInterceptor',['$q','$window','$cookies',function myHttpInterceptor($q,$window,$cookies){
     var requestInterceptor = {
@@ -250,11 +249,17 @@ console.log('config is happening') ;
     // ]);
 
 
-.run(['firebaseRef','$cookies','$state','$rootScope','auth','authorization','config',
-	function(firebaseRef,$cookies,$state,$rootScope,auth,authorization,config){
+// .run(['firebaseRef','$cookies','$state','$rootScope','auth','authorization','config',
+// 	function(firebaseRef,$cookies,$state,$rootScope,auth,authorization,config){
+
+ .run(['$cookies','$state','$rootScope','config','firebaseProductsDb',
+  function($cookies,$state,$rootScope,config,firebaseProductsDb){
+
     console.log('run phase is running');
     //auth.authObj.$onAuth(check);
      console.log(config);
+     console.log(firebaseProductsDb);
+  
      $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
       console.log('$stateChangeStart is happening') ;
         // track the state the user wants to go to; authorization service needs this

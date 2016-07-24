@@ -1,11 +1,14 @@
 'use strict';
 angular.module('myblogApp').
-factory('auth',['firebaseRef','fbProductsUrl','UserService','$window','$cookies','firebaseProductsDb',
-    function(firebaseRef,fbProductsUrl,$firebaseAuth,UserService,$window,$cookies,firebaseProductsDb){
+factory('auth',['firebaseRef','fbProductsUrl','UserService','$window','$cookies','config','firebaseProductsDb',
+    function(firebaseRef,fbProductsUrl,$firebaseAuth,UserService,$window,$cookies,config,firebaseProductsDb){
+      // var injector = angular.injector(['config']);
+      // var c = injector.get('config');
       console.log(firebaseProductsDb);
     //var ref = firebaseRef(fbProductsUrl);
     //console.log(ref);
     //var authObject = $firebaseAuth(ref);  
+    var authObject ='tempAuthObject';
 
     var authentication = 
     {
