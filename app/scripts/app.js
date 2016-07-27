@@ -11,12 +11,9 @@
 
 angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','person'])
   .factory('firebaseRef',['$window',function($window){
-
  	return function(url){
-    
  		var fireRef = url;
  		return fireRef;
-
  	};
  }])
 .provider('config',function(){
@@ -41,8 +38,6 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
   console.log('myblogApp configuration phase is happening...') ;
   
   console.log(configProvider);
-  //console.log(configProvider);
-  console.log('are two providers') ;
 
   //$httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -252,8 +247,8 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
 // .run(['firebaseRef','$cookies','$state','$rootScope','auth','authorization','config',
 // 	function(firebaseRef,$cookies,$state,$rootScope,auth,authorization,config){
 
- .run(['$cookies','$state','$rootScope','config','firebaseProductsDb',
-  function($cookies,$state,$rootScope,config,firebaseProductsDb){
+ .run(['$cookies','$state','$rootScope','config','firebaseProductsDb','myauth',
+  function($cookies,$state,$rootScope,config,firebaseProductsDb,myauth){
 
     console.log('run phase is running');
     //auth.authObj.$onAuth(check);
@@ -284,17 +279,6 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
       }
     });
 
-    // function check(user){
-    //   if(!user)
-    //     console.log('There is no authenticated User');
-    // } 
-
-
-		// if (!$firebaseArray || !firebaseRef){
-		// 	 console.log('test');
-		// 	// console.log(' Some services are not ready') ;
-
-		// }
 		$state.go('main');
 	}]);
 
