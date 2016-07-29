@@ -8,8 +8,8 @@ angular.module('myblogApp')
 // 	}
 // }])
 
-.factory('utils',['$http','$q','myService','firebaseRef','$firebaseArray','$firebaseObject',function utilsFactory($http, $q, myService, firebaseRef, $firebaseArray, $firebaseObject){
-	
+//.factory('utils',['$http','$q','myService','firebaseRef','$firebaseArray','$firebaseObject',function utilsFactory($http, $q, myService, firebaseRef, $firebaseArray, $firebaseObject){
+.factory('utils',['$http','$q','myService','firebaseRef',function utilsFactory($http, $q, myService, firebaseRef){	
 	var utils = {
 		getApi: function(apiAddress){
 			var defered = $q.defer() ;
@@ -30,33 +30,34 @@ angular.module('myblogApp')
 				defered.reject(e);
 			}
 			return defered.promise;
-		},
-		//gets a firebase Ref and return angularfire $firebaseArray which is an array of data on that Ref
-		getFirebaseArray: function(fireRef){
-			var defered = $q.defer();
-			$firebaseArray(fireRef).$loaded().then(
-				function(result){
-
-					defered.resolve(result);
-				},
-				function(reason){
-				defered.reject(reason);
-			});
-			return defered.promise;
-		},
-		//gets a firebase Ref and return angularfire $firebaseArray which is an array of data on that Ref
-		getFirebaseObject: function(fireRef){
-			var defered = $q.defer();
-			$firebaseObject(fireRef).$loaded().then(
-				function(result){
-
-					defered.resolve(result);
-				},
-				function(reason){
-				defered.reject(reason);
-			});
-			return defered.promise;
 		}
+		// ,
+		// //gets a firebase Ref and return angularfire $firebaseArray which is an array of data on that Ref
+		// getFirebaseArray: function(fireRef){
+		// 	var defered = $q.defer();
+		// 	$firebaseArray(fireRef).$loaded().then(
+		// 		function(result){
+
+		// 			defered.resolve(result);
+		// 		},
+		// 		function(reason){
+		// 		defered.reject(reason);
+		// 	});
+		// 	return defered.promise;
+		// },
+		// //gets a firebase Ref and return angularfire $firebaseArray which is an array of data on that Ref
+		// getFirebaseObject: function(fireRef){
+		// 	var defered = $q.defer();
+		// 	$firebaseObject(fireRef).$loaded().then(
+		// 		function(result){
+
+		// 			defered.resolve(result);
+		// 		},
+		// 		function(reason){
+		// 		defered.reject(reason);
+		// 	});
+		// 	return defered.promise;
+		// }
 
 
 	};

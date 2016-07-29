@@ -10,7 +10,7 @@
 
 .constant('fbjomonCustomersUrl', 'https://jomoncustomers.firebaseio.com/')
 .config(function(){
-	console.log('config module configuration is running');
+	//console.log('config module configuration is running');
 }).factory('firebaseProductsDb',function(){
 var config = {
     apiKey: "AIzaSyAOJ84RW85evs5-hExyJkQkfzYeQ3l5FBI",
@@ -22,6 +22,6 @@ var config = {
   config.db = config.app.database();
   return config ;
 }).run(['firebaseProductsDb',function(firebaseProductsDb){
-	console.log('config module run phase is running');
-	console.log(firebaseProductsDb);
+	//console.log('config module run phase is running');
+	//console.log(firebaseProductsDb);
 }]);

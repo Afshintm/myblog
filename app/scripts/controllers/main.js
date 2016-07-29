@@ -8,11 +8,11 @@
  * Controller of the myblogApp
  */
 angular.module('myblogApp')
-  .controller('MainCtrl', ['$scope','$cookies','config','$state','firebaseProductsDb',function ($scope,$cookies,config,$state,firebaseProductsDb) {
+  .controller('MainCtrl', ['$scope','$cookies','config','$state','firebaseProductsDb','myauth',function ($scope,$cookies,config,$state,firebaseProductsDb,myauth) {
     //.controller('MainCtrl', ['$scope','$cookies','auth','config','$state','firebaseProductsDb',function ($scope,$cookies,auth,config,$state,firebaseProductsDb) {
-    console.log(firebaseProductsDb);
+    //console.log(firebaseProductsDb);
     $scope.logout = function(){
-//      auth.logout();
+      myauth.logout();
       $scope.isAuthenticated = false ;
     };
     $scope.login = function(){

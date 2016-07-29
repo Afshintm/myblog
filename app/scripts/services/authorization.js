@@ -1,11 +1,11 @@
 'use strict';
 angular.module('myblogApp')
-.factory('authorization', ['$rootScope', '$state', 'auth','$q',
+.factory('authorization', ['$rootScope', '$state', 'myauth','$q',
   function($rootScope, $state, auth,$q) {
 
     return {
       authorize: function() {
-        var authData = auth.authObj.$getAuth();
+        var authData = myauth.authObj;
         console.log('We are authorizing the user...') ;
         if (authData){
 

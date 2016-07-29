@@ -35,9 +35,9 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
 
   //In configuration phase we get other dependecies using their providers
   //at this stage services, factories and controllers have not been instantiated yet
-  console.log('myblogApp configuration phase is happening...') ;
+  //console.log('myblogApp configuration phase is happening...') ;
   
-  console.log(configProvider);
+  //console.log(configProvider);
 
   //$httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -247,13 +247,8 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
 // .run(['firebaseRef','$cookies','$state','$rootScope','auth','authorization','config',
 // 	function(firebaseRef,$cookies,$state,$rootScope,auth,authorization,config){
 
- .run(['$cookies','$state','$rootScope','config','firebaseProductsDb','myauth',
-  function($cookies,$state,$rootScope,config,firebaseProductsDb,myauth){
-
-    console.log('run phase is running');
-    //auth.authObj.$onAuth(check);
-     console.log(config);
-     console.log(firebaseProductsDb);
+ .run(['$cookies','$state','$rootScope','config','firebaseProductsDb','myauth', 'authorization',
+  function($cookies,$state,$rootScope,config,firebaseProductsDb,myauth,authorization){
   
      $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
       console.log('$stateChangeStart is happening') ;
@@ -262,8 +257,6 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
         $rootScope.toStateParams = toStateParams;
         // if the principal is resolved, do an authorization check immediately. otherwise,
         // it'll be done when the state it resolved.
-        //console.log($rootScope.toState);
-        // var authData = auth.authObj.$getAuth();
         if(toState.authRequired){
           authorization.authorize();
         }
