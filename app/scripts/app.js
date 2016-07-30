@@ -94,25 +94,6 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
 
   // For any unmatched url, redirect to /state1
   $urlRouterProvider.otherwise('/');
-  //
-
-
-
-
-     // $stateProvider.whenAuthenticated = function (path, state) {
-
-     //    securedRoutes.push(path); // store all secured routes for use with authRequired() below
-     //    state.resolve = state.resolve || {};
-
-     //    state.resolve.user = ['auth', function (auth) {
-     //      return auth.authObj.$requireAuth(); //fetch auth info
-     //    }];
-
-     //    $routeProvider.when(path, route);
-     //    return this;
-     //  };
-
-     // console.log($stateProvider) ;
 
   // Now set up the states
   $stateProvider
@@ -167,10 +148,10 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
       templateUrl: 'views/Customers/customers.html',
       controller:'customersCtrl',
       resolve: {
-        'currentAuth':['auth',function(auth){
-          
-          
-          var p = auth.authObj.$requireAuth();
+        'currentAuth':['myauth',function(myauth){
+          console.log('inside resolve of customers');
+          console.log(myauth.authObj);
+          var p = myauth.authObj.$requireAuth();
           return p ;
 
         }]
@@ -210,40 +191,6 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
       });
 }])
 
-/**
-   * Apply some route security. Any route's resolve method can reject the promise with
-   * { authRequired: true } to force a redirect. This method enforces that and also watches
-   * for changes in auth status which might require us to navigate away from a path
-   * that we can no longer view.
-   */
-    // .run(['$rootScope', '$location', 'auth', 
-
-    //   function ($rootScope, $location, auth) {
-    //     // watch for login status changes and redirect if appropriate
-    //     auth.authObj.$onAuth(check);
-
-    //     // some of our routes may reject resolve promises with the special {authRequired: true} error
-    //     // this redirects to the login page whenever that is encountered
-    //     $rootScope.$on("$stateChangeError", function (e, next, prev, err) {
-    //       if (err === "AUTH_REQUIRED") {
-    //         $state.go('login');
-    //       }
-    //     });
-
-    //     function check(user) {
-    //       if (!user && authRequired($location.path())) {
-    //         //console.log('check failed', user, $location.path()); //debug
-    //         $location.path(loginRedirectPath);
-    //       } 
-    //     }
-
-    //     function authRequired(path) {
-    //       return securedRoutes.indexOf(path) !== -1;
-    //     }
-    //   }
-    // ]);
-
-
 // .run(['firebaseRef','$cookies','$state','$rootScope','auth','authorization','config',
 // 	function(firebaseRef,$cookies,$state,$rootScope,auth,authorization,config){
 
@@ -266,6 +213,7 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
       console.log('state Changed Error.');
       // We can catch the error thrown when the $requireAuth promise is rejected
       // and redirect the user back to the login page
+      console.log(error);
       if (error === 'AUTH_REQUIRED') {
         console.log('Redirectibg to login');
         $state.go('login');

@@ -1,7 +1,7 @@
 'use strict';
 angular.module('myblogApp')
 .factory('authorization', ['$rootScope', '$state', 'myauth','$q',
-  function($rootScope, $state, auth,$q) {
+  function($rootScope, $state, myauth,$q) {
 
     return {
       authorize: function() {

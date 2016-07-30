@@ -12,7 +12,7 @@
 .config(function(){
 	//console.log('config module configuration is running');
 }).factory('firebaseProductsDb',function(){
-var config = {
+  var config = {
     apiKey: "AIzaSyAOJ84RW85evs5-hExyJkQkfzYeQ3l5FBI",
     authDomain: "afshinproduct.firebaseapp.com",
     databaseURL: "https://afshinproduct.firebaseio.com",
@@ -21,7 +21,18 @@ var config = {
   config.app = firebase.initializeApp(config);
   config.db = config.app.database();
   return config ;
-}).run(['firebaseProductsDb',function(firebaseProductsDb){
+}).factory('firebaseJomonCustomersDb',function(){
+  var config = {
+      apiKey: "AIzaSyBOo9MMiTGl7305ueDCH6ucpeVTJPrY1IM",
+      authDomain: "jomoncustomers.firebaseapp.com",
+      databaseURL: "https://jomoncustomers.firebaseio.com",
+      storageBucket: "jomoncustomers.appspot.com",
+    };
+  config.app = firebase.initializeApp(config,'JomonCustomersApp');
+  config.db = config.app.database();
+  return config ;
+})
+.run(['firebaseProductsDb','firebaseJomonCustomersDb',function(firebaseProductsDb,firebaseJomonCustomersDb){
 	//console.log('config module run phase is running');
-	//console.log(firebaseProductsDb);
+	//console.log(firebaseJomonCustomersDb);
 }]);
