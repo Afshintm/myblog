@@ -9,7 +9,7 @@
  * Main module of the application.
  */ 
 
-angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','person'])
+angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','person','firebase'])
   .factory('firebaseRef',['$window',function($window){
  	return function(url){
  		var fireRef = url;

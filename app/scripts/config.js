@@ -1,6 +1,6 @@
 'use strict';
 
- angular.module('config', [])
+ angular.module('config', ['firebase'])
 
 .constant('ENV', {name:'production',apiEndpoint:'http://afshinproductsdevelop.azurewebsites.net/api'})
 
@@ -32,7 +32,10 @@
   config.db = config.app.database();
   return config ;
 })
-.run(['firebaseProductsDb','firebaseJomonCustomersDb',function(firebaseProductsDb,firebaseJomonCustomersDb){
-	//console.log('config module run phase is running');
-	//console.log(firebaseJomonCustomersDb);
+.run(['firebaseProductsDb','firebaseJomonCustomersDb','$window',function(firebaseProductsDb,firebaseJomonCustomersDb,$window){
+	console.log('config module run phase is running');
+  console.log();
+  console.log(firebaseProductsDb);
+	console.log(firebaseJomonCustomersDb);
+  console.log($window.Firebase)
 }]);
