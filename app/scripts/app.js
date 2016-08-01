@@ -188,7 +188,13 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
         controller: function($scope) {
           $scope.things = ['A', 'Set', 'Of', 'Things'];
         }
-      });
+      })
+    .state('testfire',{
+      url:'/testfire',
+      templateUrl:'views/testfire.html',
+      controller:'testfireCtrl'
+
+    });
 }])
 
 // .run(['firebaseRef','$cookies','$state','$rootScope','auth','authorization','config',

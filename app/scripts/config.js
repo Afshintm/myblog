@@ -32,11 +32,10 @@
   config.db = config.app.database();
   return config ;
 })
-.run(['firebaseProductsDb','firebaseJomonCustomersDb','$window','firebase',
-  function(firebaseProductsDb,firebaseJomonCustomersDb,$window, firebase){
+.run(['firebaseProductsDb','firebaseJomonCustomersDb',
+  function(firebaseProductsDb,firebaseJomonCustomersDb){
 	console.log('config module run phase is running');
-  console.log();
   console.log(firebaseProductsDb);
 	console.log(firebaseJomonCustomersDb);
-  console.log($window.Firebase);
+  console.log(firebase);
 }]);
