@@ -149,11 +149,8 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
       controller:'customersCtrl',
       resolve: {
         'currentAuth':['myauth',function(myauth){
-          console.log('inside resolve of customers');
-          console.log(myauth.authObj);
-          var p = myauth.authObj.$requireAuth();
-          return p ;
-
+          console.log('inside resolve of customers');         
+          return  myauth.angularfireAuthentication.$requireSignIn();
         }]
       }
     })

@@ -2,10 +2,11 @@
 angular.module('myblogApp').
 //factory('auth',['firebaseRef','fbProductsUrl','UserService','$window','$cookies','config','firebaseProductsDb',
 //    function(firebaseRef,fbProductsUrl,$firebaseAuth,UserService,$window,$cookies,config,firebaseProductsDb){
-  factory('myauth',['firebaseProductsDb','UserService','$cookies',function(firebaseProductsDb,UserService,$cookies){
+  factory('myauth',['firebaseProductsDb','UserService','$cookies','$firebaseAuth',function(firebaseProductsDb,UserService,$cookies,$firebaseAuth){
     var au = firebase.auth() ;
     var authObject = null;
-    
+    console.log('$firebaseAuth is :') ;
+    console.log($firebaseAuth()) ;
     function getAuth(){
         au.onAuthStateChanged(function(user) {
             if (user) {
@@ -49,7 +50,9 @@ angular.module('myblogApp').
               console.log('did not signOut');
             });
         },
-        authObj: authObject
+        authObj: authObject,
+        angularfireAuthentication: $firebaseAuth(),
+        firebaseAuthentication: au
     };
     return authentication ;
 //});
