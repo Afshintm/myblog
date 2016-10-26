@@ -1,14 +1,9 @@
 'use strict';
 angular.module('myblogApp')
-.factory('Customers',['utils','firebaseRef','fbjomonCustomersUrl','$q','firebaseJomonCustomersDb','firebase','$firebaseArray',function CustomersFactory(utils,firebaseRef,fbjomonCustomersUrl,$q,firebaseJomonCustomersDb,firebase,$firebaseArray){
-
+.factory('Customers',['fbjomonCustomersUrl','$q','firebaseJomonCustomersDb','$firebaseArray',function CustomersFactory(fbjomonCustomersUrl,$q,firebaseJomonCustomersDb,$firebaseArray){
     var ref = firebaseJomonCustomersDb.db.ref();
-    console.log('firebaseJomonCustomersDb within Customer factory:') ;
-    console.log(ref);
     var customer ={} ;
-
     var customerArray = $firebaseArray(ref); ;
-
     var customer = {
         getAll: function(){
             return customerArray ;
@@ -26,7 +21,6 @@ angular.module('myblogApp')
                     data.$remove(record);
                 });
             });
-
         },
         insert: function(customer){
             var defered = $q.defer();
@@ -50,9 +44,6 @@ angular.module('myblogApp')
             });
             return defered.promise;
         }
-
     };
-
     return customer ;
- 
 }]);
