@@ -6,11 +6,12 @@ angular.module('myblogApp').controller('customersCtrl',['$scope','Customers','cu
     console.log('Authentication result:') ;
     console.log(currentAuth) ;
 
-    Customers.getAll().then(function(data){
-        model.customers = data ;
-    }).catch(function(error){
-        console.error(error);
-    });
+    model.customers = Customers.getAll() ;
+    // Customers.getAll().then(function(data){
+    //     model.customers = data ;
+    // }).catch(function(error){
+    //     console.error(error);
+    // });
 
     $scope.removeCustomer = function(ref){
         console.log('remove is called'+ref);
@@ -40,11 +41,12 @@ angular.module('myblogApp').controller('customersCtrl',['$scope','Customers','cu
     var model = $scope.model = {} ;
     model.customer = {};
 
-    Customers.getAll().then(function(data){
-        model.customersData = data ;
-    }).catch(function(error){
-        console.error(error);
-    });
+    // Customers.getAll().then(function(data){
+    //     model.customersData = data ;
+    // }).catch(function(error){
+    //     console.error(error);
+    // });
+    model.customersData = Customers.getAll() ;
     $scope.newCustomer = function(){
         var list = model.customersData;              
         var existingMatch = list.filter(function(value){
