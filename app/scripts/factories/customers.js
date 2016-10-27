@@ -3,7 +3,7 @@ angular.module('myblogApp')
 .factory('Customers',['fbjomonCustomersUrl','$q','firebaseJomonCustomersDb','$firebaseArray',function CustomersFactory(fbjomonCustomersUrl,$q,firebaseJomonCustomersDb,$firebaseArray){
     var ref = firebaseJomonCustomersDb.db.ref();
     var customer ={} ;
-    var customerArray = $firebaseArray(ref); ;
+    var customerArray = $firebaseArray(ref);
     var customer = {
         getAll: function(){
             return customerArray ;
@@ -24,11 +24,11 @@ angular.module('myblogApp')
         },
         insert: function(customer){
             var defered = $q.defer();
-            customerArray.then(function(data){
-                data.$add(customer).then(function(ref){
-                    defered.resolve(data.$indexFor(ref.key()));
+            customerArray.$add(customer).then(function(data){
+                var ref = data.key;
+                defered.resolve(customerArray.$indexFor(ref));
+
                 });
-            });
             return defered.promise ;
         },
         update: function(customer){
