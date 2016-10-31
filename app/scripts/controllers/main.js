@@ -47,7 +47,7 @@ angular.module('myblogApp')
     }
 
 
-    $scope.authData = false;//auth.authObj.$getAuth();
+    $scope.authData = false;//myauth.authObj.$getAuth();
     if ($scope.authData){
       $scope.isAuthenticated = true ;
     }else
