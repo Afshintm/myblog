@@ -20,14 +20,13 @@ angular.module('myblogApp').controller('customersCtrl',['$scope','Customers','cu
     
 }]).controller('customersEditCtrl',['$scope','$state','$stateParams','Customers',function($scope,$state,$stateParams,Customers){
     var model = $scope.model = {} ;
+    model.customer = Customers.getById($stateParams.id) ;
+    // Customers.getById($stateParams.id).then(function(record){
+    //     model.customer = record;
 
-    Customers.getById($stateParams.id).then(function(record){
-        model.customer = record;
-
-    }).catch(function(error){
-        console.error(error);
-    });
- 
+    // }).catch(function(error){
+    //     console.error(error);
+    // });
     $scope.updateCustomer = function(){
         console.log('update customer is called.');
         var updresult = Customers.update(model.customer);

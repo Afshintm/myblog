@@ -10,10 +10,7 @@ angular.module('myblogApp')
         },
         getById: function(id){
             var defered = $q.defer();
-            customerArray.then(function(data){
-                defered.resolve(data.$getRecord(id));
-            });
-            return defered.promise ;
+            return customerArray.$getRecord(id);
         },
         remove: function(id){
             this.getById(id).then(function(record){
@@ -33,15 +30,13 @@ angular.module('myblogApp')
         },
         update: function(customer){
             var defered = $q.defer() ;
-            customerArray.then(function(data){
-                data.$save(customer).then(function(ref) {
-                    var refKey = ref.key();
-                    console.log('Updated record with id ' + refKey);
-                    defered.resolve(data.$indexFor(refKey));
-                }).catch(function(error){
+            customerArray.$save(customer).then(function(ref){
+                console.log('Updated record with id ' + ref.key);
+                defered.resolve(customerArray.$indexFor(ref.key));
+            }).catch(function(error){
                     defered.reject(error);
                 });
-            });
+
             return defered.promise;
         }
     };
