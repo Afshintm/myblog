@@ -1,6 +1,6 @@
 'use strict';
 angular.module('myblogApp').
-  factory('myauth',['firebaseProductsDb','UserService','$cookies','$firebaseAuth',function(firebaseProductsDb,UserService,$cookies,$firebaseAuth){
+  factory('myauth',['firebaseProductsDb','UserService','$cookies','firebase','$firebaseAuth',function(firebaseProductsDb,UserService,$cookies,firebase,$firebaseAuth){
     var au = firebase.auth() ;
     var authObject = null;
 
@@ -32,7 +32,7 @@ angular.module('myblogApp').
                 $cookies.remove('authData');
                 console.log('Signed Out successfully');
             }).catch(function(error){
-              console.log('did not signOut');
+              console.log(error);
             });
         },
         authObj: function(){return authObject;},

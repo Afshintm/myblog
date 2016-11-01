@@ -12,6 +12,9 @@
 angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','person','firebase'])
   .factory('firebaseRef',['$window',function($window){
  	return function(url){
+    if(!$window){
+      console.log('no window available.');
+    }
  		var fireRef = url;
  		return fireRef;
  	};
@@ -37,7 +40,7 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
   //at this stage services, factories and controllers have not been instantiated yet
   //console.log('myblogApp configuration phase is happening...') ;
   
-  //console.log(configProvider);
+  console.log(configProvider);
 
   //$httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];

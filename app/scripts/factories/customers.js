@@ -4,12 +4,11 @@ angular.module('myblogApp')
     var ref = firebaseJomonCustomersDb.db.ref();
     var customer ={} ;
     var customerArray = $firebaseArray(ref);
-    var customer = {
+    customer = {
         getAll: function(){
             return customerArray ;
         },
         getById: function(id){
-            var defered = $q.defer();
             return customerArray.$getRecord(id);
         },
         remove: function(id){
