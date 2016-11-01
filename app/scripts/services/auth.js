@@ -7,17 +7,22 @@ angular.module('myblogApp').
     var authObject = null;
     console.log('$firebaseAuth is :') ;
     console.log($firebaseAuth()) ;
-    function getAuth(){
-        au.onAuthStateChanged(function(user) {
-            if (user) {
-                authObject = user ;
-            } else {
-                authObject = null ;
-            }
-        });
-    };
 
-    getAuth() ;
+    $firebaseAuth().$onAuthStateChanged(function(user) {
+        console.log('onAuthStateChanged callBack is called.') ;
+        if (user) {
+            authObject = user ;
+        }else {
+            authObject = null ;
+            
+            }
+            console.log(authObject) ;
+        });
+
+    // function getAuth(){
+    // };
+
+    // getAuth() ;
 
     var authentication = 
     {
@@ -25,10 +30,7 @@ angular.module('myblogApp').
           return au.signInWithEmailAndPassword(username,password).then(function(authData){
             console.log('authData after login:');
             console.log(authData);
-            getAuth() ;
-    
             UserService.init(username,password,authData);
-            
             $cookies.put('authenticatedUser',UserService);
             $cookies.put('test1','test1Value');
             $cookies.put('authData',JSON.stringify(authData));
@@ -45,12 +47,11 @@ angular.module('myblogApp').
                 console.log('signout successfully ');
                 $cookies.remove('authenticatedUser');
                 $cookies.remove('authData');
-                getAuth() ;
             }).catch(function(error){
               console.log('did not signOut');
             });
         },
-        authObj: authObject,
+        authObj: function(){return authObject;},
         angularfireAuthentication: $firebaseAuth(),
         firebaseAuthentication: au
     };

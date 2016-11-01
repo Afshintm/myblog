@@ -46,8 +46,9 @@ angular.module('myblogApp')
         cookiesData = JSON.parse(rawAuthData);
     }
 
+    console.log(myauth.authObj());
+    $scope.authData = false;
 
-    $scope.authData = false;//myauth.authObj.$getAuth();
     if ($scope.authData){
       $scope.isAuthenticated = true ;
     }else
