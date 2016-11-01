@@ -194,9 +194,6 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
     });
 }])
 
-// .run(['firebaseRef','$cookies','$state','$rootScope','auth','authorization','config',
-// 	function(firebaseRef,$cookies,$state,$rootScope,auth,authorization,config){
-
  .run(['$cookies','$state','$rootScope','config','firebaseProductsDb','myauth', 'authorization',
   function($cookies,$state,$rootScope,config,firebaseProductsDb,myauth,authorization){
   

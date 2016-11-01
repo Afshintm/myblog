@@ -12,7 +12,6 @@ angular.module('myblogApp').controller('loginCtrl',['$scope','utils','ENV','User
         	console.log($rootScope.returnToState) ;
         	if($rootScope.returnToState){
         		$state.go($rootScope.returnToState.name) ;
-
         	}
         }).catch(function(error){
         	console.log('You are not authenticated.');
