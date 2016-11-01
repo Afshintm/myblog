@@ -10,8 +10,8 @@
 </div>
 <div>
 	<button class="btn btn-lg btn-primary" ng-click="login()" ng-show="!isAuthenticated" ng-model="isAuthenticated">login</button>
-<span>
-  <a href="#" ng-click="logout()">Logout</a> {{authenticatedUserEmail}}
+<span ng-show="isAuthenticated">
+  <a href="#" ng-show="isAuthenticated" ng-click="logout()">Logout</a> {{authenticatedUserEmail}}
 </span>
 </div>
  
