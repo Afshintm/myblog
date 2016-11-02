@@ -1,4 +1,6 @@
-angular.module("myblogApp").controller("testfireCtrl",["$scope","$firebaseObject","firebaseProductsDb",function($scope,$firebaseObject,firebaseProductsDb){
+'use strict';
+
+angular.module('myblogApp').controller('testfireCtrl',['$scope','$firebaseObject','firebaseProductsDb',function($scope,$firebaseObject,firebaseProductsDb){
 	var model = $scope.model = {
 		name: 'testfire'
 	};
@@ -8,7 +10,9 @@ angular.module("myblogApp").controller("testfireCtrl",["$scope","$firebaseObject
 
 	var obj = $firebaseObject(ref);
 	obj.$loaded().then(function(data){
-
+		if(data){
+			model.loadedData = data;
+		}
 		angular.forEach(obj, function(value, key) {
           console.log(key, value);
        });
