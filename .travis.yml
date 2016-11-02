@@ -22,14 +22,14 @@ deploy:
   skip_cleanup: true
   on: &2
     repo: Afshintm/myblog
-    branch: feature/simplifyBuild
+    branch: feature/newAngularFire1
   bucket: afshinteymoori.com
   region: ap-southeast-2
   endpoint: afshinteymoori.com.s3-website-ap-southeast-2.amazonaws.com
   upload-dir: myblog
 before_deploy:
 - rvm 1.9.3 do gem install mime-types -v 2.6.2
-- grunt autoBuild:prod
+- grunt build
 addons:
   artifacts: true
 

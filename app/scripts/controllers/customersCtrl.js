@@ -6,11 +6,12 @@ angular.module('myblogApp').controller('customersCtrl',['$scope','Customers','cu
     console.log('Authentication result:') ;
     console.log(currentAuth) ;
 
-    Customers.getAll().then(function(data){
-        model.customers = data ;
-    }).catch(function(error){
-        console.error(error);
-    });
+    model.customers = Customers.getAll() ;
+    // Customers.getAll().then(function(data){
+    //     model.customers = data ;
+    // }).catch(function(error){
+    //     console.error(error);
+    // });
 
     $scope.removeCustomer = function(ref){
         console.log('remove is called'+ref);
@@ -19,14 +20,13 @@ angular.module('myblogApp').controller('customersCtrl',['$scope','Customers','cu
     
 }]).controller('customersEditCtrl',['$scope','$state','$stateParams','Customers',function($scope,$state,$stateParams,Customers){
     var model = $scope.model = {} ;
+    model.customer = Customers.getById($stateParams.id) ;
+    // Customers.getById($stateParams.id).then(function(record){
+    //     model.customer = record;
 
-    Customers.getById($stateParams.id).then(function(record){
-        model.customer = record;
-
-    }).catch(function(error){
-        console.error(error);
-    });
- 
+    // }).catch(function(error){
+    //     console.error(error);
+    // });
     $scope.updateCustomer = function(){
         console.log('update customer is called.');
         var updresult = Customers.update(model.customer);
@@ -40,11 +40,12 @@ angular.module('myblogApp').controller('customersCtrl',['$scope','Customers','cu
     var model = $scope.model = {} ;
     model.customer = {};
 
-    Customers.getAll().then(function(data){
-        model.customersData = data ;
-    }).catch(function(error){
-        console.error(error);
-    });
+    // Customers.getAll().then(function(data){
+    //     model.customersData = data ;
+    // }).catch(function(error){
+    //     console.error(error);
+    // });
+    model.customersData = Customers.getAll() ;
     $scope.newCustomer = function(){
         var list = model.customersData;              
         var existingMatch = list.filter(function(value){
