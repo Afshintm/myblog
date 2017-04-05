@@ -7,18 +7,23 @@
  * # myblogApp
  *
  * Main module of the application.
- */
- 
-//angular.module('myblogApp', ['ngRoute','ngAnimate','ngCookies','config','firebase','person'])
-angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','firebase','person'])
-// .constant('fbProductsUrl','https://afshinproduct.firebaseio.com')
-// .constant('fbArticlesUrl','https://afshinblog.firebaseio.com')
-.factory('firebaseRef',['$window',function($window){
-	return function(url){
-		var fireRef = new $window.Firebase(url);
-		return fireRef;
-	};
-}])
+ */ 
+
+angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','person','firebase'])
+  .factory('firebaseRef',['$window',function($window){
+ 	return function(url){
+    if(!$window){
+      console.log('no window available.');
+    }
+ 		var fireRef = url;
+ 		return fireRef;
+ 	};
+ }])
+.provider('config',function(){
+   this.$get = function(){
+     return angular.module('config');
+   };
+ })
 
 // using provider helper before config to define a provider 
 // person provider simply return an instance of Person constructor function which in turn has to ahve a $get property or method 
@@ -28,13 +33,15 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 // 	return new Person();
 // })
 // we inject the defined provider using the provider name + 'Provider' suffix to our module config phase 
-.config(['ENV','$provide', '$stateProvider', '$urlRouterProvider', 'personProvider','$httpProvider', function(ENV, $provide, $stateProvider, $urlRouterProvider ,personProvider,$httpProvider){
-
+.config(['ENV','$provide', '$stateProvider', '$urlRouterProvider', 'personProvider','$httpProvider', 'configProvider',
+  function(ENV, $provide, $stateProvider, $urlRouterProvider ,personProvider,$httpProvider, configProvider){
 
   //In configuration phase we get other dependecies using their providers
   //at this stage services, factories and controllers have not been instantiated yet
   //console.log('myblogApp configuration phase is happening...') ;
   
+  console.log(configProvider);
+
   //$httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
@@ -42,11 +49,14 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 	personProvider.setFirstName('afshin');
 	personProvider.setLastName('Teymoori');
 
-	$provide.provider('appConfig',function(){
-		this.$get = function(){
-			return angular.module('config');
-		};
-	});
+// 	var t = $provide.provider('appConfig',function(){
+// 		this.$get = function(){
+// 			return angular.module('config');
+// 		};
+// 	});
+
+// console.log(t);
+
 
 	$provide.provider('myService',function myServiceProvider(){
 		this.$get = function(){
@@ -55,9 +65,7 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 		};
 	});
 
-
-
-  $provide.factory('myHttpInterceptor',['$q','$window','$cookieStore',function myHttpInterceptor($q,$window,$cookieStore){
+  $provide.factory('myHttpInterceptor',['$q','$window','$cookies',function myHttpInterceptor($q,$window,$cookies){
     var requestInterceptor = {
       request: function(config){
 
@@ -68,12 +76,12 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
           //console.log($window.sessionStorage.authenticatedUser);
         }
 
-        var authenticatedUser = $cookieStore.get('authenticatedUser') ;
+        var authenticatedUser = $cookies.get('authenticatedUser') ;
         if(authenticatedUser)
         {
           //console.log('this is authenticated User from cookieStore :');
           //console.log(authenticatedUser) ;
-          $cookieStore.remove('authenticatedUser');
+          $cookies.remove('authenticatedUser');
 
         }
 
@@ -89,25 +97,6 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
 
   // For any unmatched url, redirect to /state1
   $urlRouterProvider.otherwise('/');
-  //
-
-
-
-
-     // $stateProvider.whenAuthenticated = function (path, state) {
-
-     //    securedRoutes.push(path); // store all secured routes for use with authRequired() below
-     //    state.resolve = state.resolve || {};
-
-     //    state.resolve.user = ['auth', function (auth) {
-     //      return auth.authObj.$requireAuth(); //fetch auth info
-     //    }];
-
-     //    $routeProvider.when(path, route);
-     //    return this;
-     //  };
-
-     // console.log($stateProvider) ;
 
   // Now set up the states
   $stateProvider
@@ -162,20 +151,9 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
       templateUrl: 'views/Customers/customers.html',
       controller:'customersCtrl',
       resolve: {
-        'currentAuth':['auth','$q',function(auth,$q){
-          
-          
-          var p = auth.authObj.$requireAuth();
-          return p ;
-
-
-          // p.then(function(data){
-          //   console.log('current Auth success');
-          //   return $q.when(auth.authObj);
-          // }).catch(function(error){
-          //   console.log('currentAuth failure') ;
-          //   return $q.reject(error);
-          // });
+        'currentAuth':['myauth',function(myauth){
+          console.log('inside resolve of customers');         
+          return  myauth.angularfireAuthentication.$requireSignIn();
         }]
       }
     })
@@ -210,48 +188,18 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
         controller: function($scope) {
           $scope.things = ['A', 'Set', 'Of', 'Things'];
         }
-      });
+      })
+    .state('testfire',{
+      url:'/testfire',
+      templateUrl:'views/testfire.html',
+      controller:'testfireCtrl'
+
+    });
 }])
 
-/**
-   * Apply some route security. Any route's resolve method can reject the promise with
-   * { authRequired: true } to force a redirect. This method enforces that and also watches
-   * for changes in auth status which might require us to navigate away from a path
-   * that we can no longer view.
-   */
-    // .run(['$rootScope', '$location', 'auth', 
-
-    //   function ($rootScope, $location, auth) {
-    //     // watch for login status changes and redirect if appropriate
-    //     auth.authObj.$onAuth(check);
-
-    //     // some of our routes may reject resolve promises with the special {authRequired: true} error
-    //     // this redirects to the login page whenever that is encountered
-    //     $rootScope.$on("$stateChangeError", function (e, next, prev, err) {
-    //       if (err === "AUTH_REQUIRED") {
-    //         $state.go('login');
-    //       }
-    //     });
-
-    //     function check(user) {
-    //       if (!user && authRequired($location.path())) {
-    //         //console.log('check failed', user, $location.path()); //debug
-    //         $location.path(loginRedirectPath);
-    //       } 
-    //     }
-
-    //     function authRequired(path) {
-    //       return securedRoutes.indexOf(path) !== -1;
-    //     }
-    //   }
-    // ]);
-
-
-.run(['$firebaseArray','firebaseRef','$cookieStore','$state','$rootScope','auth','authorization',
-	function($firebaseArray,firebaseRef,$cookieStore,$state,$rootScope,auth,authorization){
-
-    //auth.authObj.$onAuth(check);
-
+ .run(['$cookies','$state','$rootScope','config','firebaseProductsDb','myauth', 'authorization',
+  function($cookies,$state,$rootScope,config,firebaseProductsDb,myauth,authorization){
+  
      $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
       console.log('$stateChangeStart is happening') ;
         // track the state the user wants to go to; authorization service needs this
@@ -259,33 +207,22 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','fire
         $rootScope.toStateParams = toStateParams;
         // if the principal is resolved, do an authorization check immediately. otherwise,
         // it'll be done when the state it resolved.
-        //console.log($rootScope.toState);
-        // var authData = auth.authObj.$getAuth();
-        if(toState.authRequired)
+        if(toState.authRequired){
           authorization.authorize();
+        }
       });    
 
-    $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {       
-      console.log('state Changed Error.')
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      console.log('state Changed Error.');
       // We can catch the error thrown when the $requireAuth promise is rejected
       // and redirect the user back to the login page
+      console.log(error);
       if (error === 'AUTH_REQUIRED') {
         console.log('Redirectibg to login');
         $state.go('login');
       }
     });
 
-    // function check(user){
-    //   if(!user)
-    //     console.log('There is no authenticated User');
-    // } 
-
-
-		if (!$firebaseArray || !firebaseRef){
-			 console.log('test');
-			// console.log(' Some services are not ready') ;
-
-		}
 		$state.go('main');
 	}]);
 

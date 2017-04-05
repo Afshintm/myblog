@@ -1,46 +1,44 @@
 'use strict';
 angular.module('myblogApp').
-factory('auth',['firebaseRef','fbProductsUrl','$firebaseAuth','UserService','$window','$cookieStore','fbArticlesUrl',
-    function(firebaseRef,fbProductsUrl,$firebaseAuth,UserService,$window,$cookieStore, fbArticlesUrl){
-    //var ref = firebaseRef(fbProductsUrl);
-    var ref = firebaseRef(fbArticlesUrl);
-    var authObject = $firebaseAuth(ref);  
+  factory('myauth',['firebaseProductsDb','UserService','$cookies','firebase','$firebaseAuth',function(firebaseProductsDb,UserService,$cookies,firebase,$firebaseAuth){
+    var au = firebase.auth() ;
+    var authObject = null;
+
+    $firebaseAuth().$onAuthStateChanged(function(user) {
+        if (user) {
+            authObject = user ;
+        }else {
+            authObject = null ;
+            }
+        });
 
     var authentication = 
     {
         login: function(username,password){
-           return authObject.$authWithPassword({
-              email: username,
-              password: password
-            }).then(function(authData) {
-              
-              UserService.init(username,password,authData);
-              
-              $cookieStore.put('authenticatedUser',UserService);
-              $cookieStore.put('authData',authData);
-              $window.sessionStorage.authenticatedUser = UserService ;
-            }).catch(function(error) {
-              console.error('Authentication failed: ', error);
-            }); 
+          return au.signInWithEmailAndPassword(username,password).then(function(authData){
+            UserService.init(username,password,authData);
+            $cookies.put('authenticatedUser',UserService);
+            $cookies.put('test1','test1Value');
+            $cookies.put('authData',JSON.stringify(authData));
+          }).catch(function(error){
+            console.log('exception in login:');
+            console.log(error);
+          });
         },
-        authObj : authObject,
-        logout : function(){
-          console.log('logout is called in auth factory');
-
-          var currentAuth = authObject.$getAuth();
-          if (currentAuth!==null){
-            console.log('We are logging out');
-            authObject.$unauth();
-            $cookieStore.remove('authenticatedUser');
-            $cookieStore.remove('authData');
-          }
-        }
-        //  function(){
-        //     var ref = firebaseRef(fbProductsUrl);
-        //     var authObject = $firebaseAuth(ref);  
-        //     return authObject ;
-        // }
-    } ;
+        logout: function(){
+            au.signOut().then(function(){
+                $cookies.remove('authenticatedUser');
+                $cookies.remove('test1');
+                $cookies.remove('authData');
+                console.log('Signed Out successfully');
+            }).catch(function(error){
+              console.log(error);
+            });
+        },
+        authObj: function(){return authObject;},
+        angularfireAuthentication: $firebaseAuth(),
+        firebaseAuthentication: au
+    };
     return authentication ;
-    
+//});
 }]);

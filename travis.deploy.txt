@@ -1,0 +1,42 @@
+to deploy on travis
+I needed to get a new aws key and secret key from aws website for travis user.
+
+I had to add the following to travis.yaml file as new doco images in travis do not have c++ compiler built in for io.js
+version 3+
+
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+
+another addition to old travis.yml file was as follow which i added in before_deploy
+
+- rvm 1.9.3 do gem install mime-types -v 2.6.2
+
+as I was getting mimetype error with ruby 1.9.3
+
+
+Another thing worth mentioning is that I also commented out grunt:test as angular-mock was getting undefined issue and
+I had no choice but to do that
+
+
+first I got access_key and secret_access_key from AWS
+then I run following command in the main folder of the project giving both access_key and secret_access_key
+ to obtain the secure version of the secret one in the travis.yml file
+
+ travis setup s3
+
+
+ this command will overwrite your current travis.yml
+
+
+ Then I need to go to the repository setting within Travis.Org website and add 3 environment variables as follow
+
+ARTIFACTS_KEY=(AWS access key id)
+ARTIFACTS_SECRET=(AWS secret access key)
+ARTIFACTS_BUCKET=(S3 bucket name)
+

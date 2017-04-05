@@ -8,23 +8,43 @@
  * Controller of the myblogApp
  */
 angular.module('myblogApp')
-  .controller('MainCtrl', ['$scope','$cookieStore','auth',function ($scope,$cookieStore,auth) {
-  	$scope.authData = $cookieStore.get('authData');
-    //console.log($scope.authData);
-  	//$scope.authObj = auth.authObj;
+  .controller('MainCtrl', ['$scope','$cookies','config','$state','firebaseProductsDb','myauth',function ($scope,$cookies,config,$state,firebaseProductsDb,myauth) {
+    $scope.logout = function(){
+      myauth.logout();
+      $scope.isAuthenticated = false ;
+    };
+    $scope.login = function(){
+      console.log('go to login');
+      $scope.isAuthenticated = true ;
+      $state.go('login');
+
+    };
+    $scope.isAuthenticated = false ;
+
+
+    var cookiesData= {} ;
+    var rawAuthData = $cookies.get('authData');
+    if (rawAuthData){
+        cookiesData = JSON.parse(rawAuthData);
+    }
+
+    $scope.authData = myauth.authObj();
+
     if ($scope.authData){
-      $scope.authenticatedUserEmail = $scope.authData.auth.token.email ;
+      $scope.isAuthenticated = true ;
+    }else
+    {
+        $scope.isAuthenticated = false;
+    }
+      
+    if ($scope.authData){
+      $scope.authenticatedUserEmail = $scope.authData.email ;
     }else
     {
       $scope.authenticatedUserEmail = '' ;
     }
-    
 
-    $scope.logout = function(){
-      auth.logout() ;
-}
 
-  	//console.log($scope.authData);
     $scope.awesomeThings = [
       'Fully responsive pages working with all desktop, tablet and mobile devices',
       'Bootstrap 3 UI enabled',

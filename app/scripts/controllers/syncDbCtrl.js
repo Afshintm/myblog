@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myblogApp').controller('syncDbCtrl',['$scope','utils','ENV','firebaseRef',function($scope, utils, ENV,firebaseRef){
+angular.module('myblogApp').controller('syncDbCtrl',['$scope','utils','ENV','firebaseRef','firebaseProductsDb','$firebaseArray',function($scope, utils, ENV,firebaseRef,firebaseProductsDb,$firebaseArray){
 	var model = $scope.model = {
 		viewTitle:'sync Database',
 		dbProducts: [],
@@ -17,10 +17,9 @@ angular.module('myblogApp').controller('syncDbCtrl',['$scope','utils','ENV','fir
 	$scope.updatePrice = function(index){
 		model.edit[index] = 0;
         model.firebaseArray.$save(index).then(function(ref){
-        	if (ref.key() === model.firebaseArray[index].$id){
+        	if (ref.key === model.firebaseArray[index].$id){
         		console.log('index updated : ' + model.firebaseArray[index].$id);
         	}
-        		
         });		
 	};
 	
@@ -30,20 +29,8 @@ angular.module('myblogApp').controller('syncDbCtrl',['$scope','utils','ENV','fir
 
 		throw (reason);
 	});
-	var productsRef = firebaseRef(model.fireBaseProductRef);
-	utils.getFirebaseArray(productsRef).then(function(firebaseData){
-			//console.log('data from firebase ref: '+ model.fireRef);
-			model.firebaseArray = firebaseData;
-			if (model.firebaseArray.length <= 0 && model.dbProducts.length>0)
-			{
-				angular.forEach(model.dbProducts,function(value){
-					model.firebaseArray.$add(value);
-				});
-			}
-		},
-		function(reason){
-			//console.log('no Data in firebase ref '+ fireRef);
-			console.log(reason);
-			model.firebaseData = null ;
-		}).then();
+
+    var ref = firebaseProductsDb.db.ref();
+    model.firebaseArray = $firebaseArray(ref);
+	
 }]);
