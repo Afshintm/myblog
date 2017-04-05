@@ -1,12 +1,14 @@
 'use strict';
-angular.module('myblogApp').controller('regCtrl',['ENV','firebaseRef','fbProductsUrl','utils','$scope','$firebaseAuth',function(ENV,firebaseRef,fbProductsUrl,utils,$scope,$firebaseAuth){
+angular.module('myblogApp').controller('regCtrl',['ENV','firebaseRef','fbProductsUrl','utils','$scope','$firebaseAuth','fbArticlesUrl',
+    function(ENV,firebaseRef,fbProductsUrl,utils,$scope,$firebaseAuth,fbArticlesUrl){
     var model = $scope.model = {
         username:'',
         password:''
     };
     $scope.register = function(){
-        console.log(fbProductsUrl);
-        var ref = firebaseRef(fbProductsUrl);
+        //console.log(fbProductsUrl);
+        //var ref = firebaseRef(fbProductsUrl);
+        var ref = firebaseRef(fbArticlesUrl);
         var auth = $firebaseAuth(ref);
         console.log(model.username+'   '+ model.password);
 
