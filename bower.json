@@ -2,7 +2,7 @@
   "name": "myblogapp",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "1.5.7",
+    "angular": "1.5.8",
     "bootstrap": "^3.2.0",
     "firebase": "3.x.x",
     "angularfire": "2.x.x",
@@ -29,5 +29,8 @@
         "less/bootstrap.less"
       ]
     }
+  },
+  "resolutions": {
+    "angular": "1.5.8"
   }
 }

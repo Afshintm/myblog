@@ -1,6 +1,6 @@
 'use strict';
 
- angular.module('config', [])
+ angular.module('config', ['firebase'])
 
 .constant('ENV', {name:'production',apiEndpoint:'http://afshinproductsdevelop.azurewebsites.net/api'})
 
@@ -11,28 +11,32 @@
 .constant('fbjomonCustomersUrl', 'https://jomoncustomers.firebaseio.com/')
 .config(function(){
 	//console.log('config module configuration is running');
-}).factory('firebaseProductsDb',function(){
+}).factory('firebaseProductsDb',['firebase',function(firebase){
   var config = {
-    apiKey: "AIzaSyAOJ84RW85evs5-hExyJkQkfzYeQ3l5FBI",
-    authDomain: "afshinproduct.firebaseapp.com",
-    databaseURL: "https://afshinproduct.firebaseio.com",
-    storageBucket: "afshinproduct.appspot.com",
+    apiKey: 'AIzaSyAOJ84RW85evs5-hExyJkQkfzYeQ3l5FBI',
+    authDomain: 'afshinproduct.firebaseapp.com',
+    databaseURL: 'https://afshinproduct.firebaseio.com',
+    storageBucket: 'afshinproduct.appspot.com',
   };
+  console.log(firebase);
   config.app = firebase.initializeApp(config);
   config.db = config.app.database();
   return config ;
-}).factory('firebaseJomonCustomersDb',function(){
+}]).factory('firebaseJomonCustomersDb',['firebase',function(firebase){
   var config = {
-      apiKey: "AIzaSyBOo9MMiTGl7305ueDCH6ucpeVTJPrY1IM",
-      authDomain: "jomoncustomers.firebaseapp.com",
-      databaseURL: "https://jomoncustomers.firebaseio.com",
-      storageBucket: "jomoncustomers.appspot.com",
+      apiKey: 'AIzaSyBOo9MMiTGl7305ueDCH6ucpeVTJPrY1IM',
+      authDomain: 'jomoncustomers.firebaseapp.com',
+      databaseURL: 'https://jomoncustomers.firebaseio.com',
+      storageBucket: 'jomoncustomers.appspot.com',
     };
   config.app = firebase.initializeApp(config,'JomonCustomersApp');
   config.db = config.app.database();
   return config ;
-})
-.run(['firebaseProductsDb','firebaseJomonCustomersDb',function(firebaseProductsDb,firebaseJomonCustomersDb){
-	//console.log('config module run phase is running');
-	//console.log(firebaseJomonCustomersDb);
+}])
+.run(['firebaseProductsDb','firebaseJomonCustomersDb','firebase',
+  function(firebaseProductsDb,firebaseJomonCustomersDb,firebase){
+	console.log('config module run phase is running');
+  console.log(firebaseProductsDb);
+	console.log(firebaseJomonCustomersDb);
+  console.log(firebase);
 }]);

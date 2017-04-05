@@ -9,9 +9,12 @@
  * Main module of the application.
  */ 
 
-angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','person'])
+angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','person','firebase'])
   .factory('firebaseRef',['$window',function($window){
  	return function(url){
+    if(!$window){
+      console.log('no window available.');
+    }
  		var fireRef = url;
  		return fireRef;
  	};
@@ -37,7 +40,7 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
   //at this stage services, factories and controllers have not been instantiated yet
   //console.log('myblogApp configuration phase is happening...') ;
   
-  //console.log(configProvider);
+  console.log(configProvider);
 
   //$httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -149,11 +152,8 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
       controller:'customersCtrl',
       resolve: {
         'currentAuth':['myauth',function(myauth){
-          console.log('inside resolve of customers');
-          console.log(myauth.authObj);
-          var p = myauth.authObj.$requireAuth();
-          return p ;
-
+          console.log('inside resolve of customers');         
+          return  myauth.angularfireAuthentication.$requireSignIn();
         }]
       }
     })
@@ -188,11 +188,14 @@ angular.module('myblogApp', ['ui.router' ,'ngAnimate','ngCookies','config','pers
         controller: function($scope) {
           $scope.things = ['A', 'Set', 'Of', 'Things'];
         }
-      });
-}])
+      })
+    .state('testfire',{
+      url:'/testfire',
+      templateUrl:'views/testfire.html',
+      controller:'testfireCtrl'
 
-// .run(['firebaseRef','$cookies','$state','$rootScope','auth','authorization','config',
-// 	function(firebaseRef,$cookies,$state,$rootScope,auth,authorization,config){
+    });
+}])
 
  .run(['$cookies','$state','$rootScope','config','firebaseProductsDb','myauth', 'authorization',
   function($cookies,$state,$rootScope,config,firebaseProductsDb,myauth,authorization){
