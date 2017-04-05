@@ -1,20 +1,15 @@
 'use strict';
 angular.module('myblogApp')
-.factory('Customers',['utils','firebaseRef','fbjomonCustomersUrl','$q',function CustomersFactory(utils,firebaseRef,fbjomonCustomersUrl,$q){
-    var ref = firebaseRef(fbjomonCustomersUrl);
-
-    var customerArray = utils.getFirebaseArray(ref) ;
-
-    var customer = {
+.factory('Customers',['fbjomonCustomersUrl','$q','firebaseJomonCustomersDb','$firebaseArray',function CustomersFactory(fbjomonCustomersUrl,$q,firebaseJomonCustomersDb,$firebaseArray){
+    var ref = firebaseJomonCustomersDb.db.ref();
+    var customer ={} ;
+    var customerArray = $firebaseArray(ref);
+    customer = {
         getAll: function(){
             return customerArray ;
         },
         getById: function(id){
-            var defered = $q.defer();
-            customerArray.then(function(data){
-                defered.resolve(data.$getRecord(id));
-            });
-            return defered.promise ;
+            return customerArray.$getRecord(id);
         },
         remove: function(id){
             this.getById(id).then(function(record){
@@ -22,33 +17,27 @@ angular.module('myblogApp')
                     data.$remove(record);
                 });
             });
-
         },
         insert: function(customer){
             var defered = $q.defer();
-            customerArray.then(function(data){
-                data.$add(customer).then(function(ref){
-                    defered.resolve(data.$indexFor(ref.key()));
+            customerArray.$add(customer).then(function(data){
+                var ref = data.key;
+                defered.resolve(customerArray.$indexFor(ref));
+
                 });
-            });
             return defered.promise ;
         },
         update: function(customer){
             var defered = $q.defer() ;
-            customerArray.then(function(data){
-                data.$save(customer).then(function(ref) {
-                    var refKey = ref.key();
-                    console.log('Updated record with id ' + refKey);
-                    defered.resolve(data.$indexFor(refKey));
-                }).catch(function(error){
+            customerArray.$save(customer).then(function(ref){
+                console.log('Updated record with id ' + ref.key);
+                defered.resolve(customerArray.$indexFor(ref.key));
+            }).catch(function(error){
                     defered.reject(error);
                 });
-            });
+
             return defered.promise;
         }
-
     };
-
     return customer ;
- 
 }]);

@@ -8,10 +8,9 @@
  * Controller of the myblogApp
  */
 angular.module('myblogApp')
-  .controller('MainCtrl', ['$scope','$cookies','auth','$state',function ($scope,$cookies,auth,$state) {
-
+  .controller('MainCtrl', ['$scope','$cookies','config','$state','firebaseProductsDb','myauth',function ($scope,$cookies,config,$state,firebaseProductsDb,myauth) {
     $scope.logout = function(){
-      auth.logout();
+      myauth.logout();
       $scope.isAuthenticated = false ;
     };
     $scope.login = function(){
@@ -22,22 +21,6 @@ angular.module('myblogApp')
     };
     $scope.isAuthenticated = false ;
 
-    // var rawAuthData = $cookies.get('authData');
-    // // console.log(rawAuthData);
-    //
-    // var d = JSON.parse(rawAuthData);
-
-    // $scope.authData = d ;
-    // // console.log($cookies.get('test1'));
-    // console.log(auth.authObj.$getAuth());
-
-    // if ($scope.authData){
-    //   $scope.authenticatedUserEmail = $scope.authData.password.email ;
-    // }else
-    // {
-    //   $scope.authenticatedUserEmail = '' ;
-    // }
-
 
     var cookiesData= {} ;
     var rawAuthData = $cookies.get('authData');
@@ -45,8 +28,8 @@ angular.module('myblogApp')
         cookiesData = JSON.parse(rawAuthData);
     }
 
+    $scope.authData = myauth.authObj();
 
-    $scope.authData = auth.authObj.$getAuth();
     if ($scope.authData){
       $scope.isAuthenticated = true ;
     }else
@@ -55,7 +38,7 @@ angular.module('myblogApp')
     }
       
     if ($scope.authData){
-      $scope.authenticatedUserEmail = $scope.authData.auth.token.email ;
+      $scope.authenticatedUserEmail = $scope.authData.email ;
     }else
     {
       $scope.authenticatedUserEmail = '' ;
